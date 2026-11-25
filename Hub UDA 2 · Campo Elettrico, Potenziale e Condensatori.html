@@ -1,0 +1,3233 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hub UDA 2 · Campo Elettrico, Potenziale e Condensatori · Liceo Monti</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter, JetBrains Mono & Kalam/Caveat per scrittura a gesso -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Configurazione MathJax v3 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <style>
+    :root {
+      --bg-page: #f1f5f9;
+      --bg-card: #ffffff;
+      --bg-subtle: #e2e8f0;
+      --text-main: #090d16;
+      --text-muted: #1e293b;
+      --border-color: #94a3b8;
+      --accent-primary: #1d4ed8;
+      --accent-secondary: #0f766e;
+      --font-scale: 1;
+      --line-height: 1.65;
+      --letter-spacing: 0em;
+    }
+
+    body.dark-theme {
+      --bg-page: #070b14;
+      --bg-card: #111827;
+      --bg-subtle: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #cbd5e1;
+      --border-color: #475569;
+      --accent-primary: #60a5fa;
+      --accent-secondary: #2dd4bf;
+    }
+
+    body.dsa-mode {
+      --font-scale: 1.15;
+      --line-height: 1.9;
+      --letter-spacing: 0.04em;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-size: calc(16px * var(--font-scale));
+      line-height: var(--line-height);
+      letter-spacing: var(--letter-spacing);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .card-surface {
+      background-color: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: 1.1rem;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      min-width: 0;
+    }
+
+    .subtle-surface {
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 0.85rem;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      min-width: 0;
+    }
+
+    /* Prevenzione straripamento formule MathJax e blocchi testo */
+    mjx-container {
+      max-width: 100% !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      padding: 2px 0;
+    }
+    mjx-container[display="true"] {
+      display: block !important;
+      width: 100% !important;
+      overflow-x: auto !important;
+      margin: 0.5rem 0 !important;
+    }
+    .cb-step-card, .card-surface p, .card-surface div, .subtle-surface div, .subtle-surface p {
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+
+    /* Miglioramento contrasto testi secondari su entrambi i temi */
+    .text-blue-600 { color: #1d4ed8 !important; }
+    body.dark-theme .text-blue-600 { color: #93c5fd !important; }
+    .text-teal-600 { color: #0f766e !important; }
+    body.dark-theme .text-teal-600 { color: #5eead4 !important; }
+    .text-emerald-600 { color: #047857 !important; }
+    body.dark-theme .text-emerald-600 { color: #6ee7b7 !important; }
+    .text-amber-600 { color: #b45309 !important; }
+    body.dark-theme .text-amber-600 { color: #fcd34d !important; }
+    .text-purple-600 { color: #6d28d9 !important; }
+    body.dark-theme .text-purple-600 { color: #c4b5fd !important; }
+    .text-rose-600 { color: #be123c !important; }
+    body.dark-theme .text-rose-600 { color: #fda4af !important; }
+
+    /* =========================================================================
+       LAVAGNA VIRTUALE REALISTICA IN ARDESIA 3D CON CORNICE LEGNO E MENSOLA
+       ========================================================================= */
+    .chalkboard-wood-frame {
+      background: linear-gradient(135deg, #5c2d16 0%, #854422 25%, #6b3419 50%, #8c4824 75%, #4a220f 100%);
+      padding: 16px 16px 0 16px;
+      border-radius: 1.35rem;
+      box-shadow:
+        0 24px 48px rgba(0, 0, 0, 0.45),
+        inset 0 2px 4px rgba(255, 255, 255, 0.25),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.6);
+      border: 2px solid #3d1b0b;
+    }
+
+    .chalkboard-slate {
+      background-color: #13251f;
+      background-image:
+        radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 75%, rgba(255, 255, 255, 0.04) 0%, transparent 55%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 2px, transparent 2px, transparent 6px),
+        linear-gradient(180deg, #162c24 0%, #0d1b16 100%);
+      border-radius: 0.65rem;
+      border: 3px solid #09120f;
+      box-shadow: inset 0 6px 24px rgba(0, 0, 0, 0.8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Polvere di gesso leggera lungo il bordo inferiore */
+    .chalkboard-slate::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 14px;
+      background: linear-gradient(to top, rgba(248, 250, 252, 0.14), transparent);
+      pointer-events: none;
+    }
+
+    /* Effetto spolverata di gesso quando si usa il Feltro Pulisci Tutto */
+    @keyframes chalkDustSweep {
+      0% { opacity: 0; transform: scale(0.95); }
+      35% { opacity: 0.88; transform: scale(1.01); }
+      100% { opacity: 0; transform: scale(1.04); }
+    }
+
+    .chalk-dust-cloud {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 25% 40%, rgba(248,250,252,0.55) 0%, transparent 45%),
+        radial-gradient(circle at 70% 55%, rgba(254,240,138,0.45) 0%, transparent 50%),
+        radial-gradient(circle at 50% 30%, rgba(255,255,255,0.6) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 35;
+      opacity: 0;
+    }
+    .chalk-dust-cloud.sweeping {
+      animation: chalkDustSweep 0.65s ease-out forwards;
+    }
+
+    /* Mensola portagessi in legno 3D */
+    .chalk-ledge {
+      background: linear-gradient(180deg, #9c522b 0%, #6e3518 60%, #47200c 100%);
+      min-height: 46px;
+      margin: 0 -22px;
+      border-radius: 0.45rem 0.45rem 1rem 1rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.55), inset 0 2px 3px rgba(255,255,255,0.3);
+      border-top: 2px solid #b5653a;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 20px;
+    }
+
+    .chalk-stick {
+      height: 12px;
+      width: 44px;
+      border-radius: 3px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.55), inset 0 2px 2px rgba(255,255,255,0.65);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .chalk-stick:hover { transform: translateY(-3px) scale(1.06); }
+    .chalk-stick.active-tool-ledge {
+      transform: translateY(-5px) scale(1.1);
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    .felt-eraser-btn {
+      padding: 6px 14px;
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      box-shadow: 0 5px 9px rgba(0,0,0,0.65), inset 0 1px 1px rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .felt-eraser-btn:hover { transform: translateY(-2px); }
+    .felt-eraser-btn.active-tool-ledge {
+      transform: translateY(-4px) scale(1.05);
+      outline: 2.5px solid #fef08a;
+      outline-offset: 2px;
+    }
+
+    /* Cancellino realistico con dorso in legno/impugnatura e cuscinetto in feltro grigio */
+    .felt-selective {
+      background: linear-gradient(180deg, #b45309 0%, #78350f 56%, #f1f5f9 58%, #cbd5e1 100%);
+      color: #0f172a;
+      border: 1.5px solid #451a03;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+    }
+
+    .felt-clear-all {
+      background: linear-gradient(180deg, #9f1239 0%, #881337 58%, #f8fafc 60%, #cbd5e1 100%);
+      color: #0f172a;
+      border: 1.5px solid #4c0519;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.75);
+    }
+
+    .real-eraser-icon {
+      display: inline-block;
+      width: 24px;
+      height: 15px;
+      border-radius: 3px;
+      background: linear-gradient(180deg, #d97706 0%, #92400e 48%, #475569 50%, #e2e8f0 54%, #94a3b8 100%);
+      border: 1px solid #1e293b;
+      box-shadow: 0 2px 3px rgba(0,0,0,0.45);
+      flex-shrink: 0;
+    }
+    .felt-eraser-btn:hover { transform: translateY(-2px); }
+    /* Cursore Cancellino realistico sulla lavagna */
+    #boardOverlayCanvas.eraser-cursor {
+      pointer-events: auto;
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='44' height='28' viewBox='0 0 44 28'><rect x='2' y='2' width='40' height='12' rx='3' fill='%23b45309' stroke='%23ffffff' stroke-width='1.5'/><rect x='2' y='14' width='40' height='12' rx='2' fill='%23e2e8f0' stroke='%23475569' stroke-width='1.5'/></svg>") 22 14, cell;
+    }
+
+    .felt-selective {
+      background: linear-gradient(180deg, #0f766e 0%, #115e59 68%, #e2e8f0 70%, #cbd5e1 100%);
+      color: #ffffff;
+      border: 1px solid #134e4a;
+    }
+
+    .felt-clear-all {
+      background: linear-gradient(180deg, #9f1239 0%, #881337 68%, #f1f5f9 70%, #cbd5e1 100%);
+      color: #ffffff;
+      border: 1px solid #4c0519;
+    }
+
+    .handwriting-chalk {
+      font-family: 'Kalam', 'Caveat', cursive, sans-serif;
+    }
+
+    .chalk-text-white { color: #f8fafc; text-shadow: 0 0 2px rgba(255,255,255,0.35); }
+    .chalk-text-yellow { color: #fef08a; text-shadow: 0 0 3px rgba(254,240,138,0.35); }
+    .chalk-text-cyan { color: #a5f3fc; text-shadow: 0 0 3px rgba(165,243,252,0.35); }
+    .chalk-text-pink { color: #fbcfe8; text-shadow: 0 0 3px rgba(251,207,232,0.35); }
+    .chalk-text-lime { color: #bbf7d0; text-shadow: 0 0 3px rgba(187,247,208,0.35); }
+
+    @keyframes chalkWriteIn {
+      0% { opacity: 0; transform: translateX(-8px) scale(0.99); filter: blur(1px); }
+      100% { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+    }
+
+    .chalk-step-anim {
+      animation: chalkWriteIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* Stili per i blocchi step sulla lavagna (supporto evidenziazione Feltro Selettivo) */
+    .cb-step-card {
+      transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+    }
+    .cb-step-card.selectable-hover:hover {
+      border-color: #f43f5e !important;
+      background-color: rgba(244, 63, 94, 0.18) !important;
+      cursor: pointer;
+    }
+    .cb-step-card.lasso-highlighted {
+      border-color: #fbbf24 !important;
+      background-color: rgba(251, 191, 36, 0.24) !important;
+      box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.5);
+    }
+
+    /* Canvas overlay per disegno libero, puntatore laser e rettangolo lazo del feltro selettivo */
+    #boardOverlayCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 25;
+      pointer-events: none;
+    }
+    #boardOverlayCanvas.interactive-overlay {
+      pointer-events: auto;
+      cursor: crosshair;
+    }
+    #boardOverlayCanvas.eraser-cursor {
+      pointer-events: auto;
+      cursor: cell;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    canvas.sim-canvas {
+      touch-action: none;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ======================================================================= -->
+  <!-- TOP BAR: PORTALE GITHUB UFFICIALE (13 LINK DIRETTI)                     -->
+  <!-- ======================================================================= -->
+  <div class="bg-slate-900 text-slate-100 border-b border-slate-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2 flex flex-col gap-1.5">
+      <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] sm:text-xs">
+        <span class="font-bold text-amber-400 flex items-center gap-1.5">
+          <span>🔗 PORTALE UFFICIALE GITHUB (apre in nuova scheda):</span>
+          <span class="hidden md:inline text-slate-400 font-normal">collegamenti diretti alle lezioni L1–L6 e alle risorse del corso</span>
+        </span>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/" target="_blank" rel="noopener noreferrer" class="text-cyan-300 hover:underline font-mono">
+          laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico ↗
+        </a>
+      </div>
+      <!-- Tutti i 13 link alle pagine del repository GitHub -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 text-xs">
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/index.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-blue-600/90 hover:bg-blue-500 text-white font-bold transition">La rotta ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/lezione-1.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-600 font-semibold transition">L1 ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/lezione-2.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-600 font-semibold transition">L2 ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/lezione-3.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-600 font-semibold transition">L3 ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/lezione-4.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-600 font-semibold transition">L4 ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/lezione-5.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-600 font-semibold transition">L5 ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/lezione-6.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-600 font-semibold transition">L6 ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/esercizi.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-teal-900/80 hover:bg-teal-800 border border-teal-600 text-teal-200 font-semibold transition">Esercizi ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/mappa.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-600 font-semibold transition">Mappa ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/formule.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-600 font-semibold transition">Formule ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/facoltativi.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-600 font-semibold transition">Facoltativi ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/autoverifica.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-amber-900/80 hover:bg-amber-800 border border-amber-600 text-amber-200 font-semibold transition">Autoverifica ↗</a>
+        <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/consegne.html" target="_blank" rel="noopener noreferrer" class="shrink-0 px-2.5 py-1 rounded-md bg-purple-900/80 hover:bg-purple-800 border border-purple-600 text-purple-200 font-semibold transition">Stampa consegne ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER PRINCIPALE & NAVIGAZIONE A 5 SCHEDE -->
+  <header class="sticky top-0 z-30 border-b backdrop-blur-md bg-opacity-95" style="background-color: var(--bg-card); border-color: var(--border-color);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div class="flex flex-wrap items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-blue-600">
+            <span>Liceo Monti di Chieri · A.S. 2026–27 · Fisica</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 border border-blue-400">HUB POTENZIAMENTO · UDA 2</span>
+          </div>
+          <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight mt-0.5">
+            Energia potenziale elettrica, potenziale elettrico e condensatori
+          </h1>
+        </div>
+
+        <!-- Strumenti Accessibilità & LIM -->
+        <div class="flex items-center gap-2">
+          <button id="btnDsa" onclick="toggleDSA()" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold border transition flex items-center gap-1.5 cursor-pointer" style="border-color: var(--border-color); background-color: var(--bg-subtle);">
+            <span>👁️</span><span>DSA / BES</span>
+          </button>
+          <button id="btnTheme" onclick="toggleTheme()" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold border transition flex items-center gap-1.5 cursor-pointer" style="border-color: var(--border-color); background-color: var(--bg-subtle);">
+            <span id="themeIcon">🌙</span><span id="themeLabel">Tema DARK</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB BAR -->
+      <nav aria-label="Schede principali" class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-3 pb-1">
+        <button onclick="switchTab('tab-rotta')" data-tab="tab-rotta" class="tab-btn whitespace-nowrap px-4 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 cursor-pointer bg-blue-600 text-white shadow-sm">
+          <span>🧭</span> 1. Rotta 5E &amp; Link Lezioni
+        </button>
+        <button onclick="switchTab('tab-laboratori')" data-tab="tab-laboratori" class="tab-btn whitespace-nowrap px-4 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 cursor-pointer border" style="border-color: var(--border-color); background-color: var(--bg-subtle);">
+          <span>⚡</span> 2. Laboratori Dinamici (Explore)
+        </button>
+        <button onclick="switchTab('tab-lavagna')" data-tab="tab-lavagna" class="tab-btn whitespace-nowrap px-4 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 cursor-pointer border" style="border-color: var(--border-color); background-color: var(--bg-subtle);">
+          <span>🧑‍🏫</span> 3. Lavagna Virtuale (6 Svolti)
+        </button>
+        <button onclick="switchTab('tab-palestra')" data-tab="tab-palestra" class="tab-btn whitespace-nowrap px-4 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 cursor-pointer border" style="border-color: var(--border-color); background-color: var(--bg-subtle);">
+          <span>🎯</span> 4. Palestra &amp; Autoverifica
+        </button>
+        <button onclick="switchTab('tab-prontuario')" data-tab="tab-prontuario" class="tab-btn whitespace-nowrap px-4 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2 cursor-pointer border" style="border-color: var(--border-color); background-color: var(--bg-subtle);">
+          <span>📐</span> 5. Prontuario Formale &amp; SI
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENUTO PRINCIPALE -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-8">
+
+    <!-- ===================================================================== -->
+    <!-- TAB 1: ROTTA 5E, STRATEGIA DIDATTICA & LINK ALLE LEZIONI GITHUB       -->
+    <!-- ===================================================================== -->
+    <section id="tab-rotta" class="tab-panel space-y-6">
+
+      <!-- Domanda Guida & Analogia Gravitazionale (Cutnell pp. 43-44) -->
+      <div class="card-surface p-6 border-l-8 border-l-blue-600 space-y-4">
+        <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+          <div class="space-y-2.5 max-w-3xl">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-blue-100 text-blue-800">
+              Fase 1 · Engage · Idea Centrale &amp; Analogia Gravitazionale (Cap. 18, pp. 43–44)
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold">
+              «Come misuriamo l'effetto di una carica senza toccarla?»
+            </h2>
+            <p style="color: var(--text-muted);">
+              Una carica fa sentire la propria presenza nello spazio circostante attraverso due descrizioni complementari: il <strong>campo elettrico</strong> ($\vec{E}$, vettore) indica quale forza agirebbe per unità di carica; il <strong>potenziale elettrico</strong> ($V$, scalare) permette di prevedere il lavoro e le variazioni di energia cinetica negli spostamenti, proprio come l'altitudine $h$ in un campo gravitazionale uniforme ($U_g = mgh \leftrightarrow U_e = q_0 Eh$).
+            </p>
+          </div>
+          <div class="subtle-surface p-4 shrink-0 text-sm space-y-1.5 border-l-4 border-l-teal-600">
+            <div class="font-extrabold text-teal-700 dark:text-teal-400">Prerequisiti &amp; Costanti SI</div>
+            <div>• $k = 8,99 \cdot 10^9\text{ N}\cdot\text{m}^2/\text{C}^2$</div>
+            <div>• $\varepsilon_0 = 8,85 \cdot 10^{-12}\text{ F/m}$</div>
+            <div>• $e = 1,60 \cdot 10^{-19}\text{ C}$</div>
+            <div>• $1\text{ eV} = 1,60 \cdot 10^{-19}\text{ J}$</div>
+            <div class="pt-1">
+              <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/index.html" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-blue-600 hover:underline">
+                Apri La rotta originale su GitHub ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Protocollo in 4 Mosse & 4 Trappole Cognitive -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="card-surface p-6 space-y-4">
+          <h3 class="text-xl font-extrabold flex items-center gap-2"><span>🧭</span> Protocollo Operativo in 4 Mosse</h3>
+          <div class="space-y-3 text-sm sm:text-base">
+            <div class="subtle-surface p-3.5 border-l-4 border-l-emerald-500">
+              <div class="font-bold text-emerald-700 dark:text-emerald-400">1. Unità SI prima di tutto</div>
+              <p>Converti subito tutti i dati: $\mu\text{C} \to 10^{-6}\text{ C}$, $\text{nC} \to 10^{-9}\text{ C}$, $\text{cm} \to 10^{-2}\text{ m}$, $\text{mm} \to 10^{-3}\text{ m}$, $\text{cm}^2 \to 10^{-4}\text{ m}^2$.</p>
+            </div>
+            <div class="subtle-surface p-3.5 border-l-4 border-l-blue-500">
+              <div class="font-bold text-blue-700 dark:text-blue-400">2. Scalare o Vettore?</div>
+              <p><strong>Vettori ($\vec{F}, \vec{E}$):</strong> usa i moduli $|q|$, disegna le frecce e somma con regole trigonometriche.<br>
+              <strong>Scalari ($U, V, \Delta V, L$):</strong> inserisci <strong>sempre il segno</strong> ($+$ o $-$) delle cariche nelle formule e somma algebricamente.</p>
+            </div>
+            <div class="subtle-surface p-3.5 border-l-4 border-l-amber-500">
+              <div class="font-bold text-amber-700 dark:text-amber-400">3. Conservazione dell'Energia ($K + U = \text{cost}$)</div>
+              <p>$\frac{1}{2}mv_i^2 + qV_i = \frac{1}{2}mv_f^2 + qV_f$.<br><em>Check intuitivo:</em> una carica positiva accelera verso $V$ minori; un elettrone ($q = -e$) accelera verso $V$ maggiori.</p>
+            </div>
+            <div class="subtle-surface p-3.5 border-l-4 border-l-purple-500">
+              <div class="font-bold text-purple-700 dark:text-purple-400">4. Condensatore Collegato vs Scollegato</div>
+              <p><strong>Batteria collegata:</strong> $\Delta V = \text{cost} \implies Q = C\Delta V$, $U = \frac{1}{2}C(\Delta V)^2$.<br>
+              <strong>Batteria scollegata:</strong> $Q = \text{cost} \implies \Delta V = \frac{Q}{C}$, $U = \frac{Q^2}{2C}$.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-surface p-6 space-y-4">
+          <h3 class="text-xl font-extrabold flex items-center gap-2"><span>⚠️</span> 4 Trappole Cognitive da Disinnescare</h3>
+          <div class="space-y-3 text-sm sm:text-base">
+            <div class="subtle-surface p-3.5">
+              <div class="font-bold text-rose-600 dark:text-rose-400">Trappola A · Segno di $q$ dimenticato in $V$ e $U$</div>
+              <p>Nel Cap. 17 calcolavi il modulo $E = k|q|/r^2$. Nel Cap. 18 $V = kq/r$ e $U = kq_1q_2/r$ <strong>portano il segno dentro la formula</strong>!</p>
+            </div>
+            <div class="subtle-surface p-3.5">
+              <div class="font-bold text-rose-600 dark:text-rose-400">Trappola B · Lavoro del campo vs Lavoro esterno</div>
+              <p>$L_{\text{campo}} = -\Delta U = -q\Delta V$. Se una carica va spontaneamente dove la spinge il campo, $L_{\text{campo}} > 0$ e $U$ diminuisce.</p>
+            </div>
+            <div class="subtle-surface p-3.5">
+              <div class="font-bold text-rose-600 dark:text-rose-400">Trappola C · Coppie nei sistemi di $N$ cariche</div>
+              <p>Regola delle strette di mano: $\frac{N(N-1)}{2}$ coppie. Triangolo: <strong>3 coppie</strong> (p. 45). Quadrato: <strong>6 coppie</strong> incluse le due diagonali $l\sqrt{2}$ (Es. 10, p. 65).</p>
+            </div>
+            <div class="subtle-surface p-3.5">
+              <div class="font-bold text-rose-600 dark:text-rose-400">Trappola D · Conversione aree $\text{cm}^2 \to \text{m}^2$</div>
+              <p>$1\text{ cm}^2 = (10^{-2}\text{ m})^2 = 10^{-4}\text{ m}^2$ (non $10^{-2}\text{ m}^2$!). Fondamentale in Es. 51 p. 73 e nei problemi sui condensatori.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mappa delle 6 Lezioni con Timeline 55' e Link Diretti al GitHub -->
+      <div class="space-y-4">
+        <div>
+          <h3 class="text-xl sm:text-2xl font-extrabold">Scansione Dettagliata delle 6 Lezioni (55 minuti ciascuna)</h3>
+          <p class="text-sm" style="color: var(--text-muted);">Ogni scheda integra i link diretti al sito GitHub, la scansione temporale 5E, il fenomeno reale e l'accesso rapido alla Lavagna Virtuale.</p>
+        </div>
+
+        <div id="lessonsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Popolato da JS -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 2: LABORATORI INTERATTIVI DINAMICI (EXPLORE - 60 FPS CANVAS)      -->
+    <!-- ===================================================================== -->
+    <section id="tab-laboratori" class="tab-panel hidden space-y-6">
+
+      <div class="card-surface p-5 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <span class="px-2.5 py-1 rounded-full text-xs font-extrabold uppercase bg-teal-100 text-teal-800">Fase 2 · Explore · Simulazioni Fisiche 60fps</span>
+          <h2 class="text-xl sm:text-2xl font-extrabold mt-1">Laboratori Interattivi Dinamici</h2>
+          <p class="text-sm" style="color: var(--text-muted);">Esplora le linee equipotenziali, lancia particelle cariche nel campo e analizza il bilancio energetico dei condensatori.</p>
+        </div>
+        <div class="flex rounded-xl p-1 border" style="background-color: var(--bg-subtle); border-color: var(--border-color);">
+          <button id="btnLabA" onclick="switchLab('A')" class="px-4 py-2 rounded-lg text-sm font-extrabold bg-blue-600 text-white transition cursor-pointer">
+            Simulatore 1 · Equipotenziali &amp; Particelle
+          </button>
+          <button id="btnLabB" onclick="switchLab('B')" class="px-4 py-2 rounded-lg text-sm font-extrabold transition cursor-pointer">
+            Simulatore 2 · Condensatore &amp; Dielettrico
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= SIMULATORE 1: CAMPI, EQUIPOTENZIALI E LANCIO PARTICELLE ================= -->
+      <div id="labPanelA" class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        
+        <!-- Canvas Interattivo (8 colonne) -->
+        <div class="xl:col-span-8 card-surface p-4 flex flex-col gap-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-bold">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900">Modalità Interazione:</span>
+              <button id="modeDragBtn" onclick="setLabAMode('drag')" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-bold cursor-pointer">✋ Trascina Cariche / Sonda</button>
+              <button id="modeLaunchBtn" onclick="setLabAMode('launch')" class="px-2.5 py-1 rounded-lg border font-bold cursor-pointer" style="border-color: var(--border-color);">🚀 Clicca per Lanciare Particella</button>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> $V&gt;0$</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-sky-500 inline-block"></span> $V&lt;0$</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> $V=0$</span>
+            </div>
+          </div>
+
+          <div class="relative rounded-xl overflow-hidden border border-slate-700 bg-slate-950" style="height: 490px;">
+            <canvas id="canvasLabA" class="sim-canvas"></canvas>
+            <!-- Overlay HUD Lavoro L_AB -->
+            <div class="absolute bottom-3 left-3 right-3 flex flex-wrap items-center justify-between gap-2 bg-slate-900/90 backdrop-blur border border-slate-700 px-3.5 py-2 rounded-xl text-xs text-slate-200 font-mono">
+              <div>
+                <span class="text-amber-400 font-bold">Sonda P:</span>
+                $V_P = <span id="hudVp" class="text-emerald-400 font-bold">0.0</span>\text{ V}$ ·
+                $|\vec{E}_P| = <span id="hudEp" class="text-cyan-400 font-bold">0.0</span>\text{ V/m}$
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="setPointA()" class="px-2 py-0.5 rounded bg-rose-600 hover:bg-rose-500 text-white font-sans font-bold cursor-pointer">Fissa A</button>
+                <button onclick="setPointB()" class="px-2 py-0.5 rounded bg-sky-600 hover:bg-sky-500 text-white font-sans font-bold cursor-pointer">Fissa B</button>
+                <span id="hudLabWork" class="text-yellow-300 font-bold">$L_{AB}(+1\text{ nC}) = 0.0\text{ nJ}$</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Barre Live Conservazione Energia Particella Test -->
+          <div class="subtle-surface p-3.5 grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1">
+                <span class="text-emerald-600">Energia Cinetica $K$</span>
+                <span id="valKin" class="font-mono">0.00 aJ</span>
+              </div>
+              <div class="w-full h-3 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div id="barKin" class="h-full bg-emerald-500 transition-all duration-75" style="width: 0%;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1">
+                <span class="text-blue-600">Energia Potenziale $U$</span>
+                <span id="valPot" class="font-mono">0.00 aJ</span>
+              </div>
+              <div class="w-full h-3 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div id="barPot" class="h-full bg-blue-500 transition-all duration-75" style="width: 50%;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1">
+                <span class="text-purple-600">Totale $E_{\text{tot}} = K + U$</span>
+                <span id="valTot" class="font-mono">0.00 aJ</span>
+              </div>
+              <div class="w-full h-3 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div id="barTot" class="h-full bg-purple-500 transition-all duration-75" style="width: 50%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pannello Controlli Simulatore 1 (4 colonne) -->
+        <div class="xl:col-span-4 card-surface p-5 space-y-4">
+          <h3 class="text-lg font-extrabold border-b pb-2" style="border-color: var(--border-color);">Sorgenti di Carica &amp; Particella Test</h3>
+
+          <!-- Preset -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-muted);">Preset Configurazioni</label>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <button onclick="applyLabAPreset('dipole')" class="px-2.5 py-2 rounded-lg font-bold border hover:bg-blue-600 hover:text-white transition cursor-pointer" style="border-color: var(--border-color);">Dipolo (+ / −)</button>
+              <button onclick="applyLabAPreset('single')" class="px-2.5 py-2 rounded-lg font-bold border hover:bg-blue-600 hover:text-white transition cursor-pointer" style="border-color: var(--border-color);">Carica Singola (+)</button>
+              <button onclick="applyLabAPreset('triangle')" class="px-2.5 py-2 rounded-lg font-bold border hover:bg-blue-600 hover:text-white transition cursor-pointer" style="border-color: var(--border-color);">Triangolo (3 cariche)</button>
+              <button onclick="applyLabAPreset('equal')" class="px-2.5 py-2 rounded-lg font-bold border hover:bg-blue-600 hover:text-white transition cursor-pointer" style="border-color: var(--border-color);">Due Uguali (+ / +)</button>
+            </div>
+          </div>
+
+          <!-- Gestione Cariche dinamiche (2 o 3 sorgenti) -->
+          <div class="subtle-surface p-3 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold uppercase">Cariche Sorgente (<span id="chargeCountLbl">2</span>/3)</span>
+              <div class="flex gap-1.5">
+                <button onclick="addSourceCharge()" class="px-2 py-1 rounded bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 cursor-pointer">+ Carica</button>
+                <button onclick="removeSourceCharge()" class="px-2 py-1 rounded bg-rose-600 text-white text-xs font-bold hover:bg-rose-500 cursor-pointer">− Rimuovi</button>
+              </div>
+            </div>
+            <div id="chargesSlidersList" class="space-y-2 max-h-40 overflow-y-auto pr-1">
+              <!-- Sliders cariche generati da JS -->
+            </div>
+          </div>
+
+          <!-- Opzioni visualizzazione -->
+          <div class="subtle-surface p-3 space-y-2 text-xs font-semibold">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input id="chkFieldLines" type="checkbox" checked class="w-4 h-4 accent-blue-600">
+              <span>Linee di forza del campo $\vec{E}$ (con frecce)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input id="chkEquipotLines" type="checkbox" checked class="w-4 h-4 accent-blue-600">
+              <span>Linee equipotenziali con valori in Volt</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input id="chkVectorGrid" type="checkbox" class="w-4 h-4 accent-blue-600">
+              <span>Griglia vettori $\vec{E}$ locale</span>
+            </label>
+          </div>
+
+          <!-- Controlli Particella Test (Protone, Elettrone, Ione Na+, Particella Alfa) -->
+          <div class="subtle-surface p-3.5 space-y-2.5 border-l-4 border-l-amber-500">
+            <div class="text-xs font-extrabold uppercase text-amber-700 dark:text-amber-400">🚀 Particella Test Dinamica</div>
+            <div class="grid grid-cols-2 gap-1.5 text-xs">
+              <button onclick="selectTestParticle('proton')" id="tp-proton" class="tp-btn py-1.5 rounded-lg font-bold bg-rose-600 text-white cursor-pointer">Protone (+e)</button>
+              <button onclick="selectTestParticle('electron')" id="tp-electron" class="tp-btn py-1.5 rounded-lg font-bold border cursor-pointer" style="border-color: var(--border-color);">Elettrone (−e)</button>
+              <button onclick="selectTestParticle('sodium')" id="tp-sodium" class="tp-btn py-1.5 rounded-lg font-bold border cursor-pointer" style="border-color: var(--border-color);">Ione Na⁺ (+e, 23u)</button>
+              <button onclick="selectTestParticle('alpha')" id="tp-alpha" class="tp-btn py-1.5 rounded-lg font-bold border cursor-pointer" style="border-color: var(--border-color);">Alfa (+2e, 4u)</button>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between text-xs font-bold">
+                <span>Velocità iniziale $v_0$</span>
+                <span id="lblTpSpeed" class="font-mono text-blue-600">0 px/s (da ferma)</span>
+              </div>
+              <input id="sliderTpSpeed" type="range" min="0" max="180" step="10" value="0" oninput="document.getElementById('lblTpSpeed').textContent = this.value + ' px/s'" class="w-full accent-amber-500 cursor-pointer">
+            </div>
+            <div class="flex gap-2">
+              <button onclick="spawnCenterParticle()" class="flex-1 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold cursor-pointer">Lancia al Centro</button>
+              <button onclick="clearTestParticles()" class="px-3 py-2 rounded-lg border text-xs font-bold cursor-pointer" style="border-color: var(--border-color);">Pulisci Tracce</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= SIMULATORE 2: CONDENSATORE, DIELETTRICO E BILANCIO ENERGETICO ================= -->
+      <div id="labPanelB" class="hidden grid-cols-1 xl:grid-cols-12 gap-6">
+        
+        <div class="xl:col-span-8 card-surface p-4 flex flex-col gap-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xs font-bold text-blue-600">Simulazione animata: cariche libere sulle piastre, polarizzazione del dielettrico scorrevole e barre live</span>
+            <span id="labBCapBadge" class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800">
+              🔌 BATTERIA COLLEGATA ($\Delta V = \text{costante}$)
+            </span>
+          </div>
+          <div class="relative rounded-xl overflow-hidden border border-slate-700 bg-slate-950" style="height: 440px;">
+            <canvas id="canvasLabB" class="sim-canvas"></canvas>
+          </div>
+
+          <!-- Barre dinamiche di Energia U, Carica Q, Campo E e Potenziale ΔV -->
+          <div class="subtle-surface p-3.5 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1">
+                <span class="text-purple-600">Energia $U$</span>
+                <span id="barLblU" class="font-mono">0.22 µJ</span>
+              </div>
+              <div class="w-full h-2.5 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div id="barFillU" class="h-full bg-purple-500 transition-all duration-100" style="width: 15%;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1">
+                <span class="text-rose-600">Carica $Q$</span>
+                <span id="barLblQ" class="font-mono">4.43 nC</span>
+              </div>
+              <div class="w-full h-2.5 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div id="barFillQ" class="h-full bg-rose-500 transition-all duration-100" style="width: 20%;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1">
+                <span class="text-cyan-600">Campo $E$</span>
+                <span id="barLblE" class="font-mono">50.0 kV/m</span>
+              </div>
+              <div class="w-full h-2.5 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div id="barFillE" class="h-full bg-cyan-500 transition-all duration-100" style="width: 25%;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-bold mb-1">
+                <span class="text-emerald-600">D.d.p. $\Delta V$</span>
+                <span id="barLblV" class="font-mono">100 V</span>
+              </div>
+              <div class="w-full h-2.5 bg-slate-300 dark:bg-slate-700 rounded-full overflow-hidden">
+                <div id="barFillV" class="h-full bg-emerald-500 transition-all duration-100" style="width: 20%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bilancio Lavoro Esterno -->
+          <div class="subtle-surface px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+            <div>
+              <strong>Lavoro meccanico esterno compiuto ($W_{\text{est}}$ a batteria staccata):</strong>
+              <span id="labBWork" class="font-mono font-extrabold text-amber-600">0.000 µJ</span>
+            </div>
+            <button onclick="resetExternalWork()" class="px-2.5 py-1 rounded-lg border text-xs font-bold cursor-pointer" style="border-color: var(--border-color);">Azzera contatore lavoro</button>
+          </div>
+        </div>
+
+        <div class="xl:col-span-4 card-surface p-5 space-y-4">
+          <h3 class="text-lg font-extrabold border-b pb-2" style="border-color: var(--border-color);">Banco di Controllo Condensatore</h3>
+
+          <!-- Interruttore Batteria -->
+          <div class="subtle-surface p-3.5 flex items-center justify-between gap-2">
+            <div>
+              <div class="text-sm font-extrabold">Interruttore Generatore</div>
+              <div class="text-xs" style="color: var(--text-muted);">Fissa $\Delta V$ (ON) oppure $Q$ (OFF)</div>
+            </div>
+            <button id="btnLabBBattery" onclick="toggleLabBBattery()" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 text-white hover:bg-emerald-500 transition cursor-pointer">
+              Collegato (ON)
+            </button>
+          </div>
+
+          <!-- Tensione V0 -->
+          <div class="subtle-surface p-3 space-y-1">
+            <div class="flex justify-between text-xs font-bold">
+              <span>Tensione batteria $V_0$</span>
+              <span id="lblLabBV0" class="font-mono text-blue-600">100 V</span>
+            </div>
+            <input id="sliderLabBV0" type="range" min="10" max="500" step="10" value="100" oninput="onLabBParamChange()" class="w-full accent-blue-600 cursor-pointer">
+          </div>
+
+          <!-- Area A -->
+          <div class="subtle-surface p-3 space-y-1">
+            <div class="flex justify-between text-xs font-bold">
+              <span>Area armature $A$</span>
+              <span id="lblLabBA" class="font-mono text-blue-600">100 cm²</span>
+            </div>
+            <input id="sliderLabBA" type="range" min="10" max="200" step="10" value="100" oninput="onLabBParamChange()" class="w-full accent-blue-600 cursor-pointer">
+          </div>
+
+          <!-- Distanza d -->
+          <div class="subtle-surface p-3 space-y-1">
+            <div class="flex justify-between text-xs font-bold">
+              <span>Distanza armature $d$</span>
+              <span id="lblLabBD" class="font-mono text-blue-600">2.0 mm</span>
+            </div>
+            <input id="sliderLabBD" type="range" min="1.0" max="10.0" step="0.5" value="2.0" oninput="onLabBParamChange()" class="w-full accent-blue-600 cursor-pointer">
+          </div>
+
+          <!-- Inserimento Lastra Dielettrica (0% - 100%) -->
+          <div class="subtle-surface p-3 space-y-2 border-l-4 border-l-teal-500">
+            <div class="flex justify-between text-xs font-bold">
+              <span>Inserimento lastra dielettrica</span>
+              <span id="lblLabBInsert" class="font-mono text-teal-600">0% (Vuoto)</span>
+            </div>
+            <input id="sliderLabBInsert" type="range" min="0" max="100" step="5" value="0" oninput="onLabBParamChange()" class="w-full accent-teal-600 cursor-pointer">
+
+            <label class="block text-xs font-bold pt-1">Materiale isolante (Tabella 1 p. 56):</label>
+            <select id="selectDielectric" onchange="onLabBParamChange()" class="w-full p-2 rounded-lg border text-xs font-bold" style="background-color: var(--bg-card); border-color: var(--border-color);">
+              <option value="1.0">Vuoto / Aria (εr = 1,0)</option>
+              <option value="2.1">Teflon (εr = 2,1)</option>
+              <option value="3.3">Carta paraffinata (εr = 3,3)</option>
+              <option value="5.4" selected>Mica rossa (εr = 5,4)</option>
+              <option value="6.7">Neoprene (εr = 6,7)</option>
+              <option value="80.4">Acqua distillata (εr = 80,4)</option>
+            </select>
+          </div>
+
+          <!-- Strumenti Digitali -->
+          <div class="p-3.5 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs space-y-1.5 border border-slate-700">
+            <div class="flex justify-between"><span>Capacità equivalente $C$:</span><span id="outLabBC" class="text-amber-300 font-bold">44.3 pF</span></div>
+            <div class="flex justify-between"><span>Tensione armature $\Delta V$:</span><span id="outLabBV" class="text-emerald-400 font-bold">100.0 V</span></div>
+            <div class="flex justify-between"><span>Carica libera $Q$:</span><span id="outLabBQ" class="text-rose-400 font-bold">4.43 nC</span></div>
+            <div class="flex justify-between"><span>Campo elettrico $E$:</span><span id="outLabBE" class="text-cyan-400 font-bold">50.0 kV/m</span></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 3: LAVAGNA VIRTUALE IN ARDESIA 3D CON DUE FELTRI INTERATTIVI      -->
+    <!-- ===================================================================== -->
+    <section id="tab-lavagna" class="tab-panel hidden space-y-6">
+
+      <div class="card-surface p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-extrabold uppercase bg-amber-100 text-amber-900 border border-amber-300">Fase 3 · Explain &amp; Elaborate · Lavagna Interattiva LIM</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold mt-1">Lavagna Virtuale del Docente (6 Esercizi Svolti Passo-Passo)</h2>
+            <p class="text-sm" style="color: var(--text-muted);">Usa i gessetti colorati per annotare in diretta, il <strong>Cancellino</strong> per cancellare i tratti di gesso al passaggio e <strong>Esci da Penna</strong> per tornare alla navigazione normale.</p>
+          </div>
+          <!-- Controlli rapidi strumento -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="btnBoardToolNone" onclick="setBoardTool('none')" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-blue-600 text-white shadow-sm cursor-pointer">✋ Esci da Penna / Cursore</button>
+            <button id="btnBoardToolChalk" onclick="setBoardTool('chalk')" class="px-3.5 py-2 rounded-xl text-xs font-extrabold border cursor-pointer" style="border-color: var(--border-color); background-color: var(--bg-subtle);">✏️ Penna Gesso</button>
+            <button id="btnBoardToolLaser" onclick="setBoardTool('laser')" class="px-3.5 py-2 rounded-xl text-xs font-extrabold border cursor-pointer" style="border-color: var(--border-color); background-color: var(--bg-subtle);">🔴 Laser</button>
+            <button id="btnBoardToolSelectErase" onclick="setBoardTool('eraser')" class="px-3.5 py-2 rounded-xl text-xs font-extrabold border flex items-center gap-1.5 cursor-pointer" style="border-color: var(--border-color); background-color: var(--bg-subtle);">
+              <span class="real-eraser-icon"></span><span>Cancellino</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Selettore 6 Esercizi -->
+        <div id="boardExercisesGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+          <!-- Popolato da JS -->
+        </div>
+      </div>
+
+      <!-- CORNICE IN LEGNO + ARDESIA + MENSOLA PORTAGESSI -->
+      <div class="chalkboard-wood-frame">
+        <div id="chalkboardSlateArea" class="chalkboard-slate p-5 sm:p-8 space-y-6">
+          
+          <!-- Nuvola di polvere di gesso per il pulsante Pulisci Tutto -->
+          <div id="chalkDustCloud" class="chalk-dust-cloud"></div>
+
+          <!-- Canvas Overlay per Gesso Libero e Puntatore Laser -->
+          <canvas id="boardOverlayCanvas"></canvas>
+
+          <!-- Banner di aiuto quando è attivo il Gesso o il Cancellino -->
+          <div id="activePenBanner" class="hidden relative z-10 px-4 py-2.5 rounded-xl bg-emerald-950/95 border border-emerald-400 text-emerald-100 text-xs sm:text-sm font-semibold flex flex-wrap items-center justify-between gap-2">
+            <span>✏️ <strong>Modalità Penna Gesso attiva:</strong> scrivi liberamente sopra la lavagna con il mouse o il dito.</span>
+            <button onclick="setBoardTool('none')" class="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold shadow cursor-pointer">✕ Esci da Modalità Penna</button>
+          </div>
+
+          <div id="selectiveEraserBanner" class="hidden relative z-10 px-4 py-2.5 rounded-xl bg-slate-900/95 border border-amber-400 text-amber-100 text-xs sm:text-sm font-semibold flex flex-wrap items-center justify-between gap-2">
+            <span class="flex items-center gap-2"><span class="real-eraser-icon"></span><span><strong>Cancellino lavagna attivo:</strong> strofina sui tratti di gesso libero per cancellarli. I blocchi dell'esercizio si rimuovono con <strong>✕ Elimina</strong>.</span></span>
+            <button onclick="setBoardTool('none')" class="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold shadow cursor-pointer">✕ Esci da Cancellino</button>
+          </div>
+
+          <!-- Intestazione Esercizio -->
+          <div class="relative z-10 border-b border-emerald-800/80 pb-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div class="space-y-1.5 max-w-3xl">
+              <div class="flex flex-wrap items-center gap-2">
+                <span id="cbLessonBadge" class="px-3 py-0.5 rounded-full text-xs font-extrabold bg-amber-400 text-slate-950">Lezione 1</span>
+                <span id="cbBookRef" class="text-xs font-mono text-cyan-300">Cutnell &amp; Johnson · Cap. 18</span>
+              </div>
+              <h3 id="cbTitle" class="text-xl sm:text-2xl font-bold chalk-text-yellow">Titolo Esercizio</h3>
+              <p id="cbText" class="text-sm sm:text-base text-slate-100 leading-relaxed pt-1"></p>
+            </div>
+
+            <!-- Controlli Step -->
+            <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 shrink-0">
+              <button id="btnCbNext" onclick="nextCbStep()" class="px-4 py-3 rounded-xl font-extrabold text-sm bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-lg transition flex items-center gap-1.5 cursor-pointer">
+                <span>Passo Successivo</span><span>✍️</span>
+              </button>
+              <button onclick="showAllCbSteps()" class="px-3.5 py-3 rounded-xl font-bold text-xs sm:text-sm bg-slate-700 hover:bg-slate-600 text-white transition cursor-pointer">
+                Mostra Tutto
+              </button>
+            </div>
+          </div>
+
+          <!-- Area Svolgimento e Diagramma Dinamico -->
+          <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div class="lg:col-span-8 space-y-3">
+              <div class="flex items-center justify-between text-xs font-mono text-emerald-300">
+                <span>SVOLGIMENTO A GESSO</span>
+                <span id="cbProgressLabel">1 di 3 blocchi visibili</span>
+              </div>
+              <div id="cbStepsList" class="space-y-3.5">
+                <!-- Popolato da JS -->
+              </div>
+            </div>
+
+            <div class="lg:col-span-4 space-y-4">
+              <div class="p-4 rounded-xl bg-black/35 border border-emerald-800/80">
+                <div class="text-xs font-bold uppercase tracking-wider chalk-text-cyan mb-2">📐 Diagramma Fisico (Passo <span id="cbSvgStepNum">1</span>)</div>
+                <div id="cbSvgBox" class="w-full flex justify-center items-center"></div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-amber-950/50 border border-amber-500/40 space-y-1">
+                <div class="text-xs font-extrabold uppercase chalk-text-yellow">💡 Consiglio Metodologico</div>
+                <p id="cbMethodNote" class="text-xs sm:text-sm text-amber-100"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MENSOLA IN LEGNO 3D CON GESSETTI COLORATI, USCITA PENNA E CANCELLINI REALISTICI -->
+        <div class="chalk-ledge">
+          <!-- Gessetti Colorati (Bianco, Giallo, Azzurro, Rosa) -->
+          <div class="flex flex-wrap items-center gap-2.5 sm:gap-3">
+            <span class="text-[11px] font-bold text-amber-100 hidden sm:inline">Gessetti:</span>
+            <button onclick="pickChalkColor('#f8fafc', this)" title="Gesso Bianco" class="chalk-stick active-tool-ledge bg-slate-100"></button>
+            <button onclick="pickChalkColor('#fef08a', this)" title="Gesso Giallo" class="chalk-stick bg-yellow-200"></button>
+            <button onclick="pickChalkColor('#67e8f9', this)" title="Gesso Azzurro" class="chalk-stick bg-cyan-300"></button>
+            <button onclick="pickChalkColor('#f9a8d4', this)" title="Gesso Rosa" class="chalk-stick bg-pink-300"></button>
+            <button id="ledgeExitPenBtn" onclick="setBoardTool('none')" title="Disattiva la penna e torna al cursore normale" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-400/60 shadow cursor-pointer">
+              ✋ Esci da Penna
+            </button>
+          </div>
+
+          <!-- I DUE CANCELLINI DA LAVAGNA -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button id="ledgeFeltSelectBtn" onclick="activateSelectiveFelt(this)" title="Cancellino in feltro: cancella i tratti di gesso al passaggio" class="felt-eraser-btn felt-selective">
+              <span class="real-eraser-icon"></span>
+              <span>Cancellino Lavagna</span>
+            </button>
+            <button id="ledgeFeltClearAllBtn" onclick="clearEntireBoardWithDust()" title="Spolvera e pulisce tutta la lavagna" class="felt-eraser-btn felt-clear-all">
+              <span class="real-eraser-icon"></span>
+              <span>Pulisci Tutto</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 4: PALESTRA ESERCIZI NON GUIDATI & QUIZ AUTOVERIFICA (CON CLIL)   -->
+    <!-- ===================================================================== -->
+    <section id="tab-palestra" class="tab-panel hidden space-y-8">
+
+      <!-- Sezione A: 8 Esercizi Non Guidati -->
+      <div class="space-y-4">
+        <div class="card-surface p-5 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-extrabold uppercase bg-purple-100 text-purple-900 border border-purple-300">Fase 4 · Elaborate · Problem Solving Autonomo</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold mt-1">8 Esercizi Non Guidati con Verifica Numerica (±3,5%)</h2>
+            <p class="text-sm" style="color: var(--text-muted);">Applica il Protocollo in 4 Mosse, inserisci il valore numerico (accetta punto o virgola decimale) e verifica subito il risultato.</p>
+          </div>
+          <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/esercizi.html" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-teal-700 text-white hover:bg-teal-600 transition">
+            Consegne A1–F2 su GitHub ↗
+          </a>
+        </div>
+
+        <div id="unguidedGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Popolato da JS -->
+        </div>
+      </div>
+
+      <!-- Sezione B: Quiz Autoverifica (10 Quesiti, inclusi CLIL in inglese) -->
+      <div class="card-surface p-6 space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b pb-4" style="border-color: var(--border-color);">
+          <div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-extrabold uppercase bg-rose-100 text-rose-900 border border-rose-300">Fase 5 · Evaluate · Test &amp; CLIL (Cutnell pp. 75–78)</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold mt-1">Quiz di Autoverifica (10 Quesiti con 2 Domande CLIL in Inglese)</h2>
+            <p class="text-sm" style="color: var(--text-muted);">Allenamento mirato per la verifica sommativa, con spiegazione dettagliata ad ogni risposta.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <div id="quizScoreBadge" class="px-4 py-2 rounded-xl font-extrabold text-sm bg-blue-600 text-white">
+              Punteggio: 0 / 10
+            </div>
+            <button onclick="resetQuiz()" class="px-3 py-2 rounded-xl text-xs font-bold border hover:opacity-80 cursor-pointer" style="border-color: var(--border-color); background-color: var(--bg-subtle);">
+              Ricomincia
+            </button>
+          </div>
+        </div>
+
+        <div id="quizList" class="space-y-5">
+          <!-- Popolato da JS -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 5: PRONTUARIO FORMALE, UNITÀ SI & CONVERTITORE RAPIDO             -->
+    <!-- ===================================================================== -->
+    <section id="tab-prontuario" class="tab-panel hidden space-y-6">
+
+      <!-- Convertitore Rapido di Unità di Misura per Esercizi -->
+      <div class="card-surface p-5 border-l-8 border-l-teal-600 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-extrabold uppercase bg-teal-100 text-teal-900 border border-teal-300">Strumento Operativo</span>
+            <h3 class="text-lg sm:text-xl font-extrabold mt-1">Convertitore Rapido Unità di Misura SI (Anti-Errore)</h3>
+          </div>
+          <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/formule.html" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-blue-600 hover:underline">
+            Scheda formule su GitHub ↗
+          </a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+          <input id="convInput" type="number" step="any" value="1" oninput="runUnitConverter()" class="px-3.5 py-2.5 rounded-xl border text-sm font-mono font-bold" style="background-color: var(--bg-subtle); border-color: var(--border-color);">
+          <select id="convType" onchange="runUnitConverter()" class="sm:col-span-2 px-3.5 py-2.5 rounded-xl border text-sm font-bold" style="background-color: var(--bg-subtle); border-color: var(--border-color);">
+            <option value="uC_to_C">microcoulomb (µC) → Coulomb (C)</option>
+            <option value="nC_to_C">nanocoulomb (nC) → Coulomb (C)</option>
+            <option value="eV_to_J">elettronvolt (eV) → Joule (J)</option>
+            <option value="J_to_eV">Joule (J) → elettronvolt (eV)</option>
+            <option value="cm2_to_m2">centimetri quadrati (cm²) → metri quadrati (m²)</option>
+            <option value="mm_to_m">millimetri (mm) → metri (m)</option>
+            <option value="uF_to_F">microfarad (µF) → Farad (F)</option>
+            <option value="pF_to_F">picofarad (pF) → Farad (F)</option>
+          </select>
+          <div class="p-2.5 rounded-xl bg-slate-900 text-emerald-400 font-mono text-sm font-extrabold text-center border border-slate-700">
+            = <span id="convOutput">1.00e-6 C</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabella Principale: 10 Grandezze Fisiche Formali -->
+      <div class="card-surface p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-extrabold">Prontuario Formale e Unità di Misura (Sistema Internazionale)</h2>
+            <p class="text-sm" style="color: var(--text-muted);">Filtra per parola chiave o argomento (es. <em>Volt, condensatore, flusso, Joule, circuitazione</em>).</p>
+          </div>
+          <input id="prontuarioFilter" type="text" oninput="filterProntuarioTable()" placeholder="🔍 Filtra grandezza o unità..." class="px-3.5 py-2 rounded-xl border text-sm w-full sm:w-64" style="background-color: var(--bg-subtle); border-color: var(--border-color);">
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border" style="border-color: var(--border-color);">
+          <table id="prontuarioTable" class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="bg-blue-700 text-white">
+                <th class="p-3.5 font-extrabold">Grandezza Fisica</th>
+                <th class="p-3.5 font-extrabold">Definizione Formale e Formule</th>
+                <th class="p-3.5 font-extrabold">Unità SI ed Equivalenze</th>
+                <th class="p-3.5 font-extrabold">Riferimenti Manuale</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y" style="border-color: var(--border-color);">
+              <tr class="hover:bg-blue-500/5">
+                <td class="p-3.5 font-bold">1. Lavoro della forza elettrica ($L_{AB}$)</td>
+                <td class="p-3.5">Lavoro compiuto da una forza conservativa nello spostamento da $A$ a $B$; indipendente dal percorso:<br>$$L_{AB} = U_A - U_B = -\Delta U$$</td>
+                <td class="p-3.5"><strong>Joule ($\text{J}$)</strong> $= \text{N}\cdot\text{m}$</td>
+                <td class="p-3.5 text-xs" style="color: var(--text-muted);">Scalare con segno.<br>Cap. 18, p. 43, Eq. [1]</td>
+              </tr>
+              <tr class="hover:bg-blue-500/5">
+                <td class="p-3.5 font-bold">2. Energia potenziale elettrica ($U$)</td>
+                <td class="p-3.5">Energia di posizione o lavoro esterno per assemblare un sistema dall'infinito:<br>• Campo uniforme: $U = q_0 E h$<br>• Coppia puntiforme: $U = k\dfrac{q_1 q_2}{r}$<br>• Sistema di $N$ cariche: $U_S = \sum_{i<j} k\dfrac{q_i q_j}{r_{ij}}$</td>
+                <td class="p-3.5"><strong>Joule ($\text{J}$)</strong><br>Sottomultiplo atomico:<br><strong>elettronvolt</strong> ($1\text{ eV} = 1,60 \cdot 10^{-19}\text{ J}$)</td>
+                <td class="p-3.5 text-xs" style="color: var(--text-muted);">$\frac{N(N-1)}{2}$ coppie.<br>Cap. 18, pp. 44–45, 48</td>
+              </tr>
+              <tr class="hover:bg-blue-500/5">
+                <td class="p-3.5 font-bold">3. Potenziale elettrico ($V$)</td>
+                <td class="p-3.5">Energia potenziale elettrica per unità di carica di prova positiva posta in un punto:<br>$$V = \frac{U}{q_0}$$<br>• Carica puntiforme ($V_\infty = 0$): $V = k\dfrac{q}{r}$</td>
+                <td class="p-3.5"><strong>Volt ($\text{V}$)</strong> $= \dfrac{\text{J}}{\text{C}}$</td>
+                <td class="p-3.5 text-xs" style="color: var(--text-muted);">Scalare con segno.<br>Cap. 18, pp. 46, 49, Eq. [4], [7]</td>
+              </tr>
+              <tr class="hover:bg-blue-500/5">
+                <td class="p-3.5 font-bold">4. Differenza di potenziale ($\Delta V$)</td>
+                <td class="p-3.5">Opposto del lavoro per unità di carica compiuto dal campo per spostare $q_0$ da $A$ a $B$:<br>$$\Delta V = V_B - V_A = \frac{\Delta U}{q_0} = -\frac{L_{AB}}{q_0}$$</td>
+                <td class="p-3.5"><strong>Volt ($\text{V}$)</strong> $= \dfrac{\text{J}}{\text{C}}$</td>
+                <td class="p-3.5 text-xs" style="color: var(--text-muted);">Detta anche tensione.<br>Cap. 18, p. 46, Eq. [5]</td>
+              </tr>
+              <tr class="hover:bg-blue-500/5">
+                <td class="p-3.5 font-bold">5. Campo elettrico ($\vec{E}$) e Gradiente</td>
+                <td class="p-3.5">Forza per unità di carica ($\vec{E} = \frac{\vec{F}}{q_0}$). Legame con il potenziale:<br>$$E = -\frac{\Delta V}{\Delta s} \quad (\Delta V = -\vec{E}\cdot\Delta\vec{s})$$</td>
+                <td class="p-3.5"><strong>Volt su metro ($\text{V/m}$)</strong><br>$\equiv$ <strong>Newton su coulomb ($\text{N/C}$)</strong></td>
+                <td class="p-3.5 text-xs" style="color: var(--text-muted);">$\vec{E} \perp$ equipotenziali, verso $V$ decrescenti.<br>Cap. 18, pp. 51–52, Eq. [9]–[10]</td>
+              </tr>
+              <tr class="hover:bg-blue-500/5">
+                <td class="p-3.5 font-bold">6. Flusso del campo elettrico ($\Phi_S(\vec{E})$)</td>
+                <td class="p-3.5">Prodotto scalare tra $\vec{E}$ e il vettore superficie $\vec{S}$ (Teorema di Gauss su superfici chiuse):<br>$$\Phi_S(\vec{E}) = E S \cos\varphi = \frac{Q_{\text{int}}}{\varepsilon_0}$$</td>
+                <td class="p-3.5">$\dfrac{\text{N}\cdot\text{m}^2}{\text{C}}$ oppure $\text{V}\cdot\text{m}$</td>
+                <td class="p-3.5 text-xs" style="color: var(--text-muted);">Richiamo Lezione 2.<br>Cap. 17, pp. 19–22</td>
+              </tr>
+              <tr class="hover:bg-blue-500/5">
+                <td class="p-3.5 font-bold">7. Circuitazione di $\vec{E}$ ($\Gamma_\gamma(\vec{E})$)</td>
+                <td class="p-3.5">Somma dei prodotti scalari $\vec{E}_k \cdot \Delta\vec{l}_k$ lungo una curva chiusa orientata $\gamma$:<br>$$\Gamma_\gamma(\vec{E}) = \sum_k \vec{E}_k \cdot \Delta\vec{l}_k = 0$$</td>
+                <td class="p-3.5">$\text{V/m}\cdot\text{m} = \text{Volt ($\text{V}$)}$</td>
+                <td class="p-3.5 text-xs" style="color: var(--text-muted);">Conservatività di $\vec{E}$.<br>Cap. 18, pp. 53–54, Eq. [11]</td>
+              </tr>
+              <tr class="hover:bg-blue-500/5">
+                <td class="p-3.5 font-bold">8. Capacità elettrica ($C$)</td>
+                <td class="p-3.5">Rapporto costante tra carica $q$ sulle armature e d.d.p. $V$:<br>$$C = \frac{q}{V} \quad \text{Cond. piano: } C = \varepsilon_r \varepsilon_0 \frac{A}{d}$$</td>
+                <td class="p-3.5"><strong>Farad ($\text{F}$)</strong> $= \dfrac{\text{C}}{\text{V}}$<br>Sottomultipli: $\mu\text{F}, \text{nF}, \text{pF}$</td>
+                <td class="p-3.5 text-xs" style="color: var(--text-muted);">Dipende solo da geometria e dielettrico.<br>Cap. 18, pp. 54–56, Eq. [14]</td>
+              </tr>
+              <tr class="hover:bg-blue-500/5">
+                <td class="p-3.5 font-bold">9. Costante dielettrica relativa ($\varepsilon_r$)</td>
+                <td class="p-3.5">Rapporto tra campo nel vuoto $E_0$ e campo nel dielettrico $E$:<br>$$\varepsilon_r = \frac{E_0}{E} = \frac{C}{C_0}$$</td>
+                <td class="p-3.5"><strong>Adimensionale</strong> (numero puro $\ge 1$)</td>
+                <td class="p-3.5 text-xs" style="color: var(--text-muted);">Tabella 1 p. 56.<br>Cap. 18, p. 55, Eq. [13]</td>
+              </tr>
+              <tr class="hover:bg-blue-500/5">
+                <td class="p-3.5 font-bold">10. Energia nel condensatore ($U$)</td>
+                <td class="p-3.5">Lavoro compiuto dal generatore per caricare il condensatore:<br>$$U = \frac{1}{2} Q V = \frac{1}{2} C V^2 = \frac{Q^2}{2C}$$</td>
+                <td class="p-3.5"><strong>Joule ($\text{J}$)</strong></td>
+                <td class="p-3.5 text-xs" style="color: var(--text-muted);">Cap. 18, pp. 57–58, Eq. [15]</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Costanti Universali e Prefissi SI -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="card-surface p-5 space-y-3">
+          <h3 class="text-lg font-extrabold">Costanti Fisiche Fondamentali</h3>
+          <div class="overflow-x-auto rounded-lg border" style="border-color: var(--border-color);">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-800 text-white">
+                <tr><th class="p-2.5">Costante</th><th class="p-2.5">Simbolo</th><th class="p-2.5">Valore SI</th></tr>
+              </thead>
+              <tbody class="divide-y" style="border-color: var(--border-color);">
+                <tr><td class="p-2.5">Costante di Coulomb</td><td class="p-2.5 font-mono">$k$</td><td class="p-2.5 font-mono">$8,99 \cdot 10^9\text{ N}\cdot\text{m}^2/\text{C}^2$</td></tr>
+                <tr><td class="p-2.5">Costante dielettrica vuoto</td><td class="p-2.5 font-mono">$\varepsilon_0$</td><td class="p-2.5 font-mono">$8,85 \cdot 10^{-12}\text{ F/m}$</td></tr>
+                <tr><td class="p-2.5">Carica elementare</td><td class="p-2.5 font-mono">$e$</td><td class="p-2.5 font-mono">$1,60 \cdot 10^{-19}\text{ C}$</td></tr>
+                <tr><td class="p-2.5">Massa elettrone</td><td class="p-2.5 font-mono">$m_e$</td><td class="p-2.5 font-mono">$9,11 \cdot 10^{-31}\text{ kg}$</td></tr>
+                <tr><td class="p-2.5">Massa protone</td><td class="p-2.5 font-mono">$m_p$</td><td class="p-2.5 font-mono">$1,67 \cdot 10^{-27}\text{ kg}$</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card-surface p-5 space-y-3">
+          <h3 class="text-lg font-extrabold">Prefissi SI e Fattori di Scala</h3>
+          <div class="overflow-x-auto rounded-lg border" style="border-color: var(--border-color);">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-800 text-white">
+                <tr><th class="p-2.5">Prefisso</th><th class="p-2.5">Simbolo</th><th class="p-2.5">Fattore</th><th class="p-2.5">Esempio tipico</th></tr>
+              </thead>
+              <tbody class="divide-y" style="border-color: var(--border-color);">
+                <tr><td class="p-2.5">giga / mega / kilo</td><td class="p-2.5 font-mono">$\text{G / M / k}$</td><td class="p-2.5 font-mono">$10^9 / 10^6 / 10^3$</td><td class="p-2.5">$10\text{ kV} = 10^4\text{ V}$</td></tr>
+                <tr><td class="p-2.5">milli-</td><td class="p-2.5 font-mono">$\text{m}$</td><td class="p-2.5 font-mono">$10^{-3}$</td><td class="p-2.5">$70\text{ mV} = 0,070\text{ V}$</td></tr>
+                <tr><td class="p-2.5">micro-</td><td class="p-2.5 font-mono">$\mu$</td><td class="p-2.5 font-mono">$10^{-6}$</td><td class="p-2.5">$120\text{ }\mu\text{F} = 1,2 \cdot 10^{-4}\text{ F}$</td></tr>
+                <tr><td class="p-2.5">nano-</td><td class="p-2.5 font-mono">$\text{n}$</td><td class="p-2.5 font-mono">$10^{-9}$</td><td class="p-2.5">$8,0\text{ nm} = 8,0 \cdot 10^{-9}\text{ m}$</td></tr>
+                <tr><td class="p-2.5">pico-</td><td class="p-2.5 font-mono">$\text{p}$</td><td class="p-2.5 font-mono">$10^{-12}$</td><td class="p-2.5">$3,7\text{ pF} = 3,7 \cdot 10^{-12}\text{ F}$</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t py-5 px-4 text-center text-xs" style="border-color: var(--border-color); color: var(--text-muted);">
+    Hub di Supporto e Potenziamento · Liceo Monti di Chieri (A.S. 2026–27) · Coordinato con <a href="https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-bold">laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico</a>.
+  </footer>
+
+  <!-- ======================================================================= -->
+  <!-- JAVASCRIPT APPLICATIVO COMPLETO                                         -->
+  <!-- ======================================================================= -->
+  <script>
+    /* -----------------------------------------------------------------------
+       1. STATO GLOBALE, ACCESSIBILITÀ, TEMA E NAVIGAZIONE TAB
+       ----------------------------------------------------------------------- */
+    const GITHUB_BASE = "https://laski74.github.io/Fisica_5_UDA_2_Potenziale_Elettrico";
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-theme");
+      const isDark = document.body.classList.contains("dark-theme");
+      document.getElementById("themeIcon").textContent = isDark ? "☀️" : "🌙";
+      document.getElementById("themeLabel").textContent = isDark ? "Tema CHIARO" : "Tema DARK";
+    }
+
+    function toggleDSA() {
+      document.body.classList.toggle("dsa-mode");
+      const isDsa = document.body.classList.contains("dsa-mode");
+      const btn = document.getElementById("btnDsa");
+      if (isDsa) {
+        btn.classList.add("bg-amber-400", "text-slate-950", "border-amber-500");
+      } else {
+        btn.classList.remove("bg-amber-400", "text-slate-950", "border-amber-500");
+      }
+      typesetMath();
+    }
+
+    function typesetMath() {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise().catch(() => {});
+      }
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.add("hidden"));
+      const target = document.getElementById(tabId);
+      if (target) target.classList.remove("hidden");
+
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        if (btn.getAttribute("data-tab") === tabId) {
+          btn.classList.add("bg-blue-600", "text-white", "shadow-sm");
+          btn.classList.remove("border");
+        } else {
+          btn.classList.remove("bg-blue-600", "text-white", "shadow-sm");
+          btn.classList.add("border");
+        }
+      });
+
+      if (tabId === "tab-laboratori") {
+        requestAnimationFrame(() => {
+          resizeAllSimCanvases();
+          onLabBParamChange();
+        });
+      }
+      if (tabId === "tab-lavagna") {
+        requestAnimationFrame(() => resizeOverlayCanvas());
+      }
+      typesetMath();
+    }
+
+    /* -----------------------------------------------------------------------
+       2. TAB 1: DATI DELLE 6 LEZIONI CON LINK DIRETTI AL REPOSITORY GITHUB
+       ----------------------------------------------------------------------- */
+    const lessonsHubData = [
+      {
+        num: 1,
+        week: "Settimana 1 · Lezione 1 (55′)",
+        title: "Il lavoro elettrico dipende dalla strada?",
+        objective: "Prevedere e calcolare il segno del lavoro della forza elettrica e della variazione di energia potenziale.",
+        githubPage: `${GITHUB_BASE}/lezione-1.html`,
+        theoryLink: `${GITHUB_BASE}/lezione-1.html#teoria-1`,
+        theoryDesc: "Cap. 18, pp. 43–44 · Forza conservativa, $L_{AB} = U_A - U_B = -\\Delta U$, analogia gravitazionale. p. 46 · Richiamo a $\\Delta V = -L_{AB}/q_0$.",
+        timeline: [
+          "0–10′ Engage: Lancio di un pallone vs carica $+q_0$ tra armature.",
+          "10–25′ Explain: Lavoro indipendente dal cammino e regola dei segni.",
+          "25–45′ Elaborate: Svolgimento guidato p. 64 n. 2 e confronto con A1.",
+          "45–55′ Evaluate: Check rapido sui segni e assegnazione p. 67 n. 16."
+        ],
+        phenomenon: "<strong>Biologia Cellulare (Membrana &amp; Ione $\\text{Na}^+$):</strong> L'esterno del neurone è a $+70\\text{ mV}$ rispetto all'interno. All'apertura dei canali ionici, il campo elettrico compie lavoro positivo ($+1,1 \\cdot 10^{-20}\\text{ J}$) spingendo lo ione $\\text{Na}^+$ dentro la cellula.",
+        links: [
+          { label: "Aula: Cap. 18 p. 64 n. 2", url: `${GITHUB_BASE}/lezione-1.html#libro-18-2` },
+          { label: "Casa: Cap. 18 p. 67 n. 16", url: `${GITHUB_BASE}/lezione-1.html#libro-18-16` },
+          { label: "Recupero: p. 64 n. 5", url: `${GITHUB_BASE}/lezione-1.html#libro-18-5` },
+          { label: "Sfida: p. 67 n. 17", url: `${GITHUB_BASE}/lezione-1.html#libro-18-17` }
+        ],
+        altText: "Alternative senza manuale: A1 e A2",
+        boardExerciseIdx: 0
+      },
+      {
+        num: 2,
+        week: "Settimana 1 · Lezione 2 (55′)",
+        title: "Il campo attraversa la scatola?",
+        objective: "Sommare vettori di campo elettrico e distinguere il campo locale dal flusso netto attraverso una superficie chiusa.",
+        githubPage: `${GITHUB_BASE}/lezione-2.html`,
+        theoryLink: `${GITHUB_BASE}/lezione-2.html#teoria-2`,
+        theoryDesc: "Richiamo Cap. 17 · pp. 11–18 sovrapposizione vettoriale di $\\vec{E}$ e linee di campo; pp. 19–22 flusso $\\Phi_S(\\vec{E}) = ES\\cos\\varphi$ e Teorema di Gauss.",
+        timeline: [
+          "0–10′ Engage: Quante linee di campo entrano ed escono da una scatola vuota?",
+          "10–25′ Explain: Flusso su superficie piana vs superficie chiusa di Gauss.",
+          "25–45′ Elaborate: Disegno di $\\vec{E}$ in B1 ed esercizio Cap. 17 p. 35 n. 38.",
+          "45–55′ Evaluate: Sintesi sulla schermatura e compiti (p. 36 n. 40)."
+        ],
+        phenomenon: "<strong>Gabbia di Faraday e Schermatura Elettrostatica:</strong> Perché in automobile durante un temporale si è protetti dai fulmini e perché i cavi coassiali TV/Internet sono avvolti da una calza metallica.",
+        links: [
+          { label: "Aula: Cap. 17 p. 35 n. 38", url: `${GITHUB_BASE}/lezione-2.html#libro-17-38` },
+          { label: "Casa: Cap. 17 p. 36 n. 40", url: `${GITHUB_BASE}/lezione-2.html#libro-17-40` },
+          { label: "Recupero: p. 36 n. 41", url: `${GITHUB_BASE}/lezione-2.html#libro-17-41` },
+          { label: "Sfida: p. 34 n. 29", url: `${GITHUB_BASE}/lezione-2.html#libro-17-29` }
+        ],
+        altText: "Alternative senza manuale: B1 e B2",
+        boardExerciseIdx: 1
+      },
+      {
+        num: 3,
+        week: "Settimana 2 · Lezione 3 (55′)",
+        title: "Quanto costa montare tre cariche?",
+        objective: "Calcolare l'energia potenziale elettrica $U$ di un sistema sommando ogni coppia una sola volta, con distanze e segni corretti.",
+        githubPage: `${GITHUB_BASE}/lezione-3.html`,
+        theoryLink: `${GITHUB_BASE}/lezione-3.html#teoria-3`,
+        theoryDesc: "Cap. 18, pp. 44–45 · Energia potenziale di una coppia $U = k\\frac{q_1q_2}{r}$ e costruzione di un sistema (Esempio 1 a p. 45 sulle 3 coppie).",
+        timeline: [
+          "0–10′ Engage: Quanto lavoro serve per portare la 1ª, la 2ª e la 3ª carica dall'infinito?",
+          "10–25′ Explain: Regola combinatoria delle coppie $\\frac{N(N-1)}{2}$ e segni.",
+          "25–45′ Elaborate: Atomo di idrogeno (p. 64 n. 3) e sistema su quadrato (p. 65 n. 10).",
+          "45–55′ Evaluate: Verifica delle 6 coppie nel quadrato."
+        ],
+        phenomenon: "<strong>Energia di Legame dell'Atomo di Idrogeno ($-27,2\\text{ eV}$):</strong> Avvicinare un elettrone dall'infinito fino al raggio di Bohr ($5,29 \\cdot 10^{-11}\\text{ m}$) attorno al protone libera $4,35 \\cdot 10^{-18}\\text{ J} = 27,2\\text{ eV}$.",
+        links: [
+          { label: "Aula: Cap. 18 p. 64 n. 3", url: `${GITHUB_BASE}/lezione-3.html#libro-18-3` },
+          { label: "Casa: Cap. 18 p. 64 n. 6", url: `${GITHUB_BASE}/lezione-3.html#libro-18-6` },
+          { label: "Recupero: p. 65 n. 7", url: `${GITHUB_BASE}/lezione-3.html#libro-18-7` },
+          { label: "Sfida: p. 66 n. 11", url: `${GITHUB_BASE}/lezione-3.html#libro-18-11` }
+        ],
+        altText: "Alternative senza manuale: C1 e C2",
+        boardExerciseIdx: 2
+      },
+      {
+        num: 4,
+        week: "Settimana 2 · Lezione 4 (55′)",
+        title: "Una mappa dei volt",
+        objective: "Passare dal potenziale al lavoro ($\\Delta K = -q\\Delta V$) e leggere direzione, verso e modulo di $\\vec{E}$ da una mappa equipotenziale.",
+        githubPage: `${GITHUB_BASE}/lezione-4.html`,
+        theoryLink: `${GITHUB_BASE}/lezione-4.html#teoria-4`,
+        theoryDesc: "Cap. 18 · pp. 46–51 potenziale, $\\text{eV}$, cariche puntiformi ed equipotenziali; Facoltativi pp. 52–54 gradiente $E = -\\Delta V/\\Delta s$ e circuitazione $\\Gamma_\\gamma(\\vec{E})=0$.",
+        timeline: [
+          "0–10′ Engage: Esplorazione nel Simulatore 1 delle curve di livello del potenziale.",
+          "10–25′ Explain: Perpendicolarità $\\vec{E} \\perp$ equipotenziali e gradiente.",
+          "25–45′ Elaborate: Mappa radiale (p. 69 n. 26) e condensatore (p. 69 n. 32).",
+          "45–55′ Evaluate: Accelerazione particelle in Volt ed elettronvolt."
+        ],
+        phenomenon: "<strong>Precipitatori Elettrostatici PM10 &amp; Fulmini:</strong> Filtri industriali a $+10\\text{ kV}$ catturano le polveri sottili (Es. 37 p. 71); nell'atmosfera i fulmini scoccano quando il gradiente supera la rigidità dielettrica dell'aria ($\\sim 3 \\cdot 10^6\\text{ V/m}$).",
+        links: [
+          { label: "Aula: Cap. 18 p. 69 n. 26", url: `${GITHUB_BASE}/lezione-4.html#libro-18-26` },
+          { label: "Casa: Cap. 18 p. 69 n. 32", url: `${GITHUB_BASE}/lezione-4.html#libro-18-32` },
+          { label: "Recupero: p. 67 n. 15", url: `${GITHUB_BASE}/lezione-4.html#libro-18-15` },
+          { label: "Sfida: p. 71 n. 34", url: `${GITHUB_BASE}/lezione-4.html#libro-18-34` }
+        ],
+        altText: "Alternative senza manuale: D1 e D2",
+        boardExerciseIdx: 3
+      },
+      {
+        num: 5,
+        week: "Settimana 3 · Lezione 5 (55′)",
+        title: "Come si fa spazio alla carica?",
+        objective: "Calcolare capacità e carica di un condensatore piano e identificare quale grandezza rimane fissata con/senza batteria.",
+        githubPage: `${GITHUB_BASE}/lezione-5.html`,
+        theoryLink: `${GITHUB_BASE}/lezione-5.html#teoria-5`,
+        theoryDesc: "Cap. 18, pp. 54–56 · Capacità $C = q/V$, condensatore piano $C = \\varepsilon_r\\varepsilon_0 A/d$ e polarizzazione del dielettrico. p. 57 Esempio 7 · Tastiera capacitiva.",
+        timeline: [
+          "0–10′ Engage: Cosa succede inserendo un isolante a batteria staccata? (Simulatore 2).",
+          "10–25′ Explain: Formule costruttive vs circuitali e costante $\\varepsilon_r$.",
+          "25–45′ Elaborate: Tastiera (p. 57) e condensatore scollegato (p. 73 n. 52).",
+          "45–55′ Evaluate: Quiz rapido collegato vs scollegato."
+        ],
+        phenomenon: "<strong>Tastiera Capacitiva e Doppio Strato Fosfolipidico Neuronale:</strong> Premere un tasto riduce $d$ aumentando $C$ di $19\\text{ pF}$ (Esempio 7 p. 57); la membrana assonica ($\\varepsilon_r \\approx 5$, $d = 10\\text{ nm}$) agisce come condensatore biologico.",
+        links: [
+          { label: "Aula: Cap. 18 p. 72 n. 40", url: `${GITHUB_BASE}/lezione-5.html#libro-18-40` },
+          { label: "Casa: Cap. 18 p. 73 n. 46", url: `${GITHUB_BASE}/lezione-5.html#libro-18-46` },
+          { label: "Recupero: p. 72 n. 41", url: `${GITHUB_BASE}/lezione-5.html#libro-18-41` },
+          { label: "Sfida: p. 73 n. 49", url: `${GITHUB_BASE}/lezione-5.html#libro-18-49` }
+        ],
+        altText: "Alternative senza manuale: E1 e E2",
+        boardExerciseIdx: 4
+      },
+      {
+        num: 6,
+        week: "Settimana 3 · Lezione 6 (55′)",
+        title: "Dove finisce l'energia?",
+        objective: "Calcolare l'energia immagazzinata in un condensatore e scegliere la formula più adatta nei problemi misti.",
+        githubPage: `${GITHUB_BASE}/lezione-6.html`,
+        theoryLink: `${GITHUB_BASE}/lezione-6.html#teoria-6`,
+        theoryDesc: "Cap. 18, pp. 57–58 · Lavoro di carica $U = \\frac{1}{2}QV = \\frac{1}{2}CV^2 = \\frac{Q^2}{2C}$ e applicazione al flash. Autoverifica finale a p. 78.",
+        timeline: [
+          "0–10′ Engage: Perché il flash del telefono illumina una stanza con una piccola batteria?",
+          "10–25′ Explain: Il fattore $\\frac{1}{2}$ (tensione media $\\bar{V} = V/2$) e potenza $P = U/\\Delta t$.",
+          "25–45′ Elaborate: Flash (p. 73 n. 48) e defibrillatore cardiaco (p. 74 n. 58).",
+          "45–55′ Evaluate: Simulazione autoverifica p. 78."
+        ],
+        phenomenon: "<strong>Defibrillatore Cardiaco e Flash Fotografico:</strong> Il flash scarica $33\\text{ J}$ in $3,9\\text{ ms}$ ($P \\approx 8,5\\text{ kW}$); il defibrillatore accumula $73\\text{ J}$ a $1,1\\text{ kV}$ per sincronizzare il battito cardiaco (Es. 58 p. 74).",
+        links: [
+          { label: "Aula: Cap. 18 p. 73 n. 48", url: `${GITHUB_BASE}/lezione-6.html#libro-18-48` },
+          { label: "Casa: Cap. 18 p. 74 n. 58", url: `${GITHUB_BASE}/lezione-6.html#libro-18-58` },
+          { label: "Recupero: p. 72 n. 44", url: `${GITHUB_BASE}/lezione-6.html#libro-18-44` },
+          { label: "Sfida: p. 73 n. 52", url: `${GITHUB_BASE}/lezione-6.html#libro-18-52` }
+        ],
+        altText: "Alternative senza manuale: F1 e F2",
+        boardExerciseIdx: 5
+      }
+    ];
+
+    function renderLessonsGrid() {
+      const grid = document.getElementById("lessonsGrid");
+      grid.innerHTML = lessonsHubData.map(l => `
+        <article class="card-surface p-5 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-blue-100 text-blue-800">${l.week}</span>
+              <a href="${l.githubPage}" target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded-lg text-xs font-extrabold bg-slate-900 hover:bg-blue-700 text-white transition flex items-center gap-1">
+                <span>Apri Lezione ${l.num} su GitHub</span><span>↗</span>
+              </a>
+            </div>
+
+            <div>
+              <h4 class="text-lg sm:text-xl font-extrabold">${l.num}. ${l.title}</h4>
+              <p class="text-sm font-medium mt-0.5" style="color: var(--text-muted);">${l.objective}</p>
+            </div>
+
+            <div class="text-sm space-y-1">
+              <div><span class="font-bold text-blue-600">📖 Teoria:</span> ${l.theoryDesc}</div>
+              <div>
+                <a href="${l.theoryLink}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-blue-600 hover:underline">
+                  Vai alla teoria e alle pagine collegate su GitHub ↗
+                </a>
+              </div>
+            </div>
+
+            <div class="subtle-surface p-3 space-y-1">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-slate-500">⏱️ Scansione 55 minuti (Modello 5E)</div>
+              <ul class="text-xs space-y-0.5 list-disc list-inside">
+                ${l.timeline.map(t => `<li>${t}</li>`).join("")}
+              </ul>
+            </div>
+
+            <div class="p-3 rounded-xl bg-teal-500/10 border border-teal-500/30 text-xs sm:text-sm">
+              <span class="font-extrabold text-teal-700 dark:text-teal-400">🌍 Fenomeno Reale:</span> ${l.phenomenon}
+            </div>
+          </div>
+
+          <div class="pt-3 border-t space-y-2.5" style="border-color: var(--border-color);">
+            <div class="flex flex-wrap gap-1.5 text-xs">
+              ${l.links.map(lk => `
+                <a href="${lk.url}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-md border hover:border-blue-500 hover:text-blue-600 font-semibold transition" style="border-color: var(--border-color); background-color: var(--bg-subtle);">
+                  ${lk.label} ↗
+                </a>
+              `).join("")}
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-[11px]" style="color: var(--text-muted);">${l.altText}</span>
+              <button onclick="openExerciseOnBoard(${l.boardExerciseIdx})" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm transition flex items-center gap-1.5 cursor-pointer">
+                <span>🧑‍🏫 Apri esercizio modello sulla Lavagna</span>
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function openExerciseOnBoard(exIdx) {
+      switchTab("tab-lavagna");
+      selectCbExercise(exIdx);
+    }
+
+    /* -----------------------------------------------------------------------
+       3. TAB 2: LABORATORI DINAMICI 60 FPS (SIMULATORE 1 & SIMULATORE 2)
+       ----------------------------------------------------------------------- */
+    const K_COUL = 8.99e9;
+    const EPS_0 = 8.85e-12;
+    let currentLab = "A";
+
+    function switchLab(lab) {
+      currentLab = lab;
+      const pA = document.getElementById("labPanelA");
+      const pB = document.getElementById("labPanelB");
+      const bA = document.getElementById("btnLabA");
+      const bB = document.getElementById("btnLabB");
+
+      if (lab === "A") {
+        pA.classList.remove("hidden");
+        pB.classList.add("hidden");
+        pB.classList.remove("grid");
+        bA.classList.add("bg-blue-600", "text-white");
+        bB.classList.remove("bg-blue-600", "text-white");
+      } else {
+        pA.classList.add("hidden");
+        pB.classList.remove("hidden");
+        pB.classList.add("grid");
+        bB.classList.add("bg-blue-600", "text-white");
+        bA.classList.remove("bg-blue-600", "text-white");
+      }
+      setTimeout(resizeAllSimCanvases, 30);
+    }
+
+    function resizeAllSimCanvases() {
+      const cA = document.getElementById("canvasLabA");
+      if (cA && cA.parentElement && currentLab === "A") {
+        const r = cA.parentElement.getBoundingClientRect();
+        const w = Math.floor(r.width) || 720;
+        const h = Math.floor(r.height) || 490;
+        if (cA.width !== w || cA.height !== h) {
+          cA.width = w;
+          cA.height = h;
+        }
+        computeHeatmapCache();
+      }
+      const cB = document.getElementById("canvasLabB");
+      if (cB && cB.parentElement && currentLab === "B") {
+        const r = cB.parentElement.getBoundingClientRect();
+        const w = Math.floor(r.width) || 720;
+        const h = Math.floor(r.height) || 440;
+        if (cB.width !== w || cB.height !== h) {
+          cB.width = w;
+          cB.height = h;
+        }
+      }
+    }
+    window.addEventListener("resize", resizeAllSimCanvases);
+
+    /* --- SIMULATORE 1: CAMPI, EQUIPOTENZIALI, LINEE DI FORZA E PARTICELLE TEST --- */
+    let labAMode = "drag"; // 'drag' | 'launch'
+    let sourceCharges = [
+      { id: 1, q_nC: 5, x: 240, y: 245, r: 17 },
+      { id: 2, q_nC: -5, x: 500, y: 245, r: 17 }
+    ];
+    let draggedSource = null;
+    let probeCursor = { x: 370, y: 160 };
+    let pointA = null;
+    let pointB = null;
+    let selectedTestType = "proton"; // 'proton' | 'electron' | 'sodium' | 'alpha'
+    let testParticles = [];
+    let heatmapOffscreen = null;
+
+    function setLabAMode(mode) {
+      labAMode = mode;
+      const bDrag = document.getElementById("modeDragBtn");
+      const bLaunch = document.getElementById("modeLaunchBtn");
+      if (mode === "drag") {
+        bDrag.className = "px-2.5 py-1 rounded-lg bg-blue-600 text-white font-bold cursor-pointer";
+        bLaunch.className = "px-2.5 py-1 rounded-lg border font-bold cursor-pointer";
+      } else {
+        bLaunch.className = "px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold cursor-pointer";
+        bDrag.className = "px-2.5 py-1 rounded-lg border font-bold cursor-pointer";
+      }
+    }
+
+    function selectTestParticle(type) {
+      selectedTestType = type;
+      document.querySelectorAll(".tp-btn").forEach(btn => {
+        btn.className = "tp-btn py-1.5 rounded-lg font-bold border cursor-pointer";
+      });
+      const active = document.getElementById(`tp-${type}`);
+      if (type === "proton") active.className = "tp-btn py-1.5 rounded-lg font-bold bg-rose-600 text-white cursor-pointer";
+      if (type === "electron") active.className = "tp-btn py-1.5 rounded-lg font-bold bg-sky-600 text-white cursor-pointer";
+      if (type === "sodium") active.className = "tp-btn py-1.5 rounded-lg font-bold bg-emerald-600 text-white cursor-pointer";
+      if (type === "alpha") active.className = "tp-btn py-1.5 rounded-lg font-bold bg-amber-500 text-slate-950 cursor-pointer";
+    }
+
+    function renderSourceSliders() {
+      document.getElementById("chargeCountLbl").textContent = sourceCharges.length;
+      const list = document.getElementById("chargesSlidersList");
+      list.innerHTML = sourceCharges.map((c, idx) => `
+        <div class="p-2 rounded-lg border text-xs space-y-1" style="border-color: var(--border-color); background-color: var(--bg-card);">
+          <div class="flex justify-between font-bold">
+            <span>Carica $q_${idx + 1}$</span>
+            <span id="lblSrcQ_${idx}" class="font-mono ${c.q_nC > 0 ? 'text-rose-500' : (c.q_nC < 0 ? 'text-sky-500' : 'text-slate-400')}">
+              ${c.q_nC > 0 ? '+' : ''}${c.q_nC} nC
+            </span>
+          </div>
+          <input type="range" min="-10" max="10" step="1" value="${c.q_nC}" oninput="updateSourceQ(${idx}, this.value)" class="w-full accent-blue-600 cursor-pointer">
+        </div>
+      `).join("");
+      typesetMath();
+    }
+
+    function updateSourceQ(idx, val) {
+      sourceCharges[idx].q_nC = parseFloat(val);
+      const lbl = document.getElementById(`lblSrcQ_${idx}`);
+      if (lbl) {
+        lbl.textContent = `${sourceCharges[idx].q_nC > 0 ? '+' : ''}${sourceCharges[idx].q_nC} nC`;
+        lbl.className = `font-mono ${sourceCharges[idx].q_nC > 0 ? 'text-rose-500' : (sourceCharges[idx].q_nC < 0 ? 'text-sky-500' : 'text-slate-400')}`;
+      }
+      computeHeatmapCache();
+    }
+
+    function addSourceCharge() {
+      if (sourceCharges.length >= 3) return;
+      const c = document.getElementById("canvasLabA");
+      const w = c.width || 700;
+      const h = c.height || 490;
+      sourceCharges.push({
+        id: Date.now(),
+        q_nC: 4,
+        x: w * 0.5,
+        y: h * 0.28,
+        r: 17
+      });
+      renderSourceSliders();
+      computeHeatmapCache();
+    }
+
+    function removeSourceCharge() {
+      if (sourceCharges.length <= 2) return;
+      sourceCharges.pop();
+      renderSourceSliders();
+      computeHeatmapCache();
+    }
+
+    function applyLabAPreset(preset) {
+      const c = document.getElementById("canvasLabA");
+      const w = c.width || 720;
+      const h = c.height || 490;
+      testParticles = [];
+      if (preset === "single") {
+        sourceCharges = [
+          { id: 1, q_nC: 6, x: w * 0.5, y: h * 0.5, r: 17 },
+          { id: 2, q_nC: 0, x: w * 0.8, y: h * 0.2, r: 17 }
+        ];
+      } else if (preset === "dipole") {
+        sourceCharges = [
+          { id: 1, q_nC: 5, x: w * 0.35, y: h * 0.5, r: 17 },
+          { id: 2, q_nC: -5, x: w * 0.65, y: h * 0.5, r: 17 }
+        ];
+      } else if (preset === "equal") {
+        sourceCharges = [
+          { id: 1, q_nC: 5, x: w * 0.35, y: h * 0.5, r: 17 },
+          { id: 2, q_nC: 5, x: w * 0.65, y: h * 0.5, r: 17 }
+        ];
+      } else if (preset === "triangle") {
+        sourceCharges = [
+          { id: 1, q_nC: 6, x: w * 0.5, y: h * 0.28, r: 16 },
+          { id: 2, q_nC: 6, x: w * 0.36, y: h * 0.68, r: 16 },
+          { id: 3, q_nC: -6, x: w * 0.64, y: h * 0.68, r: 16 }
+        ];
+      }
+      renderSourceSliders();
+      computeHeatmapCache();
+    }
+
+    function evalFieldAndV(px, py) {
+      const scale = 140;
+      let V = 0;
+      let Ex = 0;
+      let Ey = 0;
+      for (const ch of sourceCharges) {
+        const q = ch.q_nC * 1e-9;
+        if (Math.abs(q) < 1e-13) continue;
+        const dx = (px - ch.x) / scale;
+        const dy = (py - ch.y) / scale;
+        const r = Math.hypot(dx, dy);
+        const safeR = Math.max(r, 0.09);
+        V += (K_COUL * q) / safeR;
+        const f = (K_COUL * q) / (safeR * safeR * safeR);
+        Ex += f * dx;
+        Ey += f * dy;
+      }
+      return { V, Ex, Ey, Emag: Math.hypot(Ex, Ey) };
+    }
+
+    function computeHeatmapCache() {
+      const cA = document.getElementById("canvasLabA");
+      if (!cA || cA.width === 0) return;
+      const w = cA.width;
+      const h = cA.height;
+
+      if (!heatmapOffscreen) heatmapOffscreen = document.createElement("canvas");
+      heatmapOffscreen.width = w;
+      heatmapOffscreen.height = h;
+      const octx = heatmapOffscreen.getContext("2d");
+      octx.clearRect(0, 0, w, h);
+
+      const cell = 6;
+      const cols = Math.ceil(w / cell) + 1;
+      const rows = Math.ceil(h / cell) + 1;
+      const vGrid = new Float32Array(cols * rows);
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const px = c * cell;
+          const py = r * cell;
+          const { V } = evalFieldAndV(px, py);
+          vGrid[r * cols + c] = V;
+
+          const norm = Math.max(-1, Math.min(1, V / 150));
+          if (Math.abs(V) < 2.2) {
+            octx.fillStyle = "rgba(52, 211, 153, 0.34)";
+          } else if (norm > 0) {
+            octx.fillStyle = `rgba(244, 63, 94, ${0.10 + norm * 0.55})`;
+          } else {
+            octx.fillStyle = `rgba(14, 165, 233, ${0.10 + (-norm) * 0.55})`;
+          }
+          octx.fillRect(px, py, cell, cell);
+        }
+      }
+
+      if (document.getElementById("chkEquipotLines").checked) {
+        const levels = [-120, -80, -45, -20, 20, 45, 80, 120];
+        octx.lineWidth = 1.4;
+        octx.font = "bold 10px JetBrains Mono, monospace";
+
+        for (const lvl of levels) {
+          octx.strokeStyle = lvl > 0 ? "rgba(254, 205, 211, 0.72)" : "rgba(186, 230, 253, 0.72)";
+          octx.fillStyle = lvl > 0 ? "#fecdd3" : "#bae6fd";
+          let labeled = false;
+          octx.beginPath();
+          for (let r = 0; r < rows - 1; r++) {
+            for (let c = 0; c < cols - 1; c++) {
+              const v00 = vGrid[r * cols + c] - lvl;
+              const v10 = vGrid[r * cols + (c + 1)] - lvl;
+              const v01 = vGrid[(r + 1) * cols + c] - lvl;
+              if ((v00 * v10 < 0) || (v00 * v01 < 0)) {
+                const px = c * cell;
+                const py = r * cell;
+                octx.moveTo(px, py);
+                octx.lineTo(px + 3, py + 3);
+                if (!labeled && px > 60 && px < w - 80 && py > 40 && py < h - 70 && (r + c) % 13 === 0) {
+                  octx.fillText(`${lvl > 0 ? '+' : ''}${lvl}V`, px + 4, py - 3);
+                  labeled = true;
+                }
+              }
+            }
+          }
+          octx.stroke();
+        }
+      }
+
+      if (document.getElementById("chkFieldLines").checked) {
+        octx.strokeStyle = "rgba(250, 204, 21, 0.78)";
+        octx.fillStyle = "rgba(250, 204, 21, 0.88)";
+        octx.lineWidth = 1.5;
+
+        const hasPositive = sourceCharges.some(ch => ch.q_nC > 0);
+        const seeds = [];
+
+        if (hasPositive) {
+          for (const ch of sourceCharges) {
+            if (ch.q_nC <= 0) continue;
+            const nSeeds = Math.max(6, Math.round(Math.abs(ch.q_nC) * 2.2));
+            for (let i = 0; i < nSeeds; i++) {
+              const ang = (i * 2 * Math.PI) / nSeeds;
+              seeds.push({ x: ch.x + Math.cos(ang) * (ch.r + 3), y: ch.y + Math.sin(ang) * (ch.r + 3), dir: 1 });
+            }
+          }
+        } else {
+          for (const ch of sourceCharges) {
+            if (ch.q_nC >= 0) continue;
+            const nSeeds = Math.max(6, Math.round(Math.abs(ch.q_nC) * 2.2));
+            for (let i = 0; i < nSeeds; i++) {
+              const ang = (i * 2 * Math.PI) / nSeeds;
+              seeds.push({ x: ch.x + Math.cos(ang) * (ch.r + 3), y: ch.y + Math.sin(ang) * (ch.r + 3), dir: -1 });
+            }
+          }
+        }
+
+        for (const s of seeds) {
+          let x = s.x;
+          let y = s.y;
+          octx.beginPath();
+          octx.moveTo(x, y);
+          for (let step = 0; step < 140; step++) {
+            const { Ex, Ey, Emag } = evalFieldAndV(x, y);
+            if (Emag < 0.5) break;
+            const ux = (Ex / Emag) * s.dir;
+            const uy = (Ey / Emag) * s.dir;
+            x += ux * 5.5;
+            y += uy * 5.5;
+            if (x < 0 || x > w || y < 0 || y > h) break;
+            octx.lineTo(x, y);
+
+            if (step === 28 || step === 75) {
+              const fux = ux * s.dir;
+              const fuy = uy * s.dir;
+              const ang = Math.atan2(fuy, fux);
+              octx.save();
+              octx.translate(x, y);
+              octx.rotate(ang);
+              octx.fillRect(-3, -2, 6, 4);
+              octx.restore();
+            }
+
+            let hit = false;
+            for (const ch of sourceCharges) {
+              if (Math.abs(ch.q_nC) > 0 && Math.hypot(x - ch.x, y - ch.y) < ch.r) {
+                hit = true;
+                break;
+              }
+            }
+            if (hit) break;
+          }
+          octx.stroke();
+        }
+      }
+    }
+
+    function spawnParticleAt(px, py) {
+      const speed = parseFloat(document.getElementById("sliderTpSpeed").value);
+      const vx = speed;
+      const vy = 0;
+      let qSign = 1;
+      let massFactor = 1.0;
+
+      if (selectedTestType === "proton") { qSign = 1; massFactor = 1.0; }
+      else if (selectedTestType === "electron") { qSign = -1; massFactor = 0.25; }
+      else if (selectedTestType === "sodium") { qSign = 1; massFactor = 3.2; }
+      else if (selectedTestType === "alpha") { qSign = 2; massFactor = 2.1; }
+
+      testParticles.push({
+        x: px,
+        y: py,
+        vx,
+        vy,
+        qSign,
+        massFactor,
+        type: selectedTestType,
+        trail: [{ x: px, y: py }],
+        alive: true
+      });
+      if (testParticles.length > 5) testParticles.shift();
+    }
+
+    function spawnCenterParticle() {
+      const c = document.getElementById("canvasLabA");
+      spawnParticleAt((c.width || 700) * 0.5, (c.height || 490) * 0.42);
+    }
+
+    function clearTestParticles() {
+      testParticles = [];
+      document.getElementById("valKin").textContent = "0.00 aJ";
+      document.getElementById("valPot").textContent = "0.00 aJ";
+      document.getElementById("valTot").textContent = "0.00 aJ";
+    }
+
+    function setPointA() { pointA = { x: probeCursor.x, y: probeCursor.y }; }
+    function setPointB() { pointB = { x: probeCursor.x, y: probeCursor.y }; }
+
+    function updateAndDrawLabA(dt) {
+      const canvas = document.getElementById("canvasLabA");
+      if (!canvas || currentLab !== "A") return;
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+      if (w === 0) return;
+
+      ctx.clearRect(0, 0, w, h);
+
+      if (heatmapOffscreen) {
+        ctx.drawImage(heatmapOffscreen, 0, 0);
+      }
+
+      if (document.getElementById("chkVectorGrid").checked) {
+        for (let y = 30; y < h - 55; y += 45) {
+          for (let x = 30; x < w - 20; x += 45) {
+            const { Ex, Ey, Emag } = evalFieldAndV(x, y);
+            if (Emag < 1) continue;
+            const ux = Ex / Emag;
+            const uy = Ey / Emag;
+            const len = Math.min(18, 6 + Math.log10(Emag + 1) * 4);
+            ctx.strokeStyle = "rgba(255,255,255,0.65)";
+            ctx.lineWidth = 1.4;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + ux * len, y + uy * len);
+            ctx.stroke();
+          }
+        }
+      }
+
+      let lastParticleStats = null;
+      for (const p of testParticles) {
+        if (p.alive) {
+          const { Ex, Ey } = evalFieldAndV(p.x, p.y);
+          const accelScale = 0.085;
+          const ax = (p.qSign * Ex * accelScale) / p.massFactor;
+          const ay = (p.qSign * Ey * accelScale) / p.massFactor;
+
+          p.vx += ax * dt;
+          p.vy += ay * dt;
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+
+          p.trail.push({ x: p.x, y: p.y });
+          if (p.trail.length > 160) p.trail.shift();
+
+          if (p.x < 5 || p.x > w - 5 || p.y < 5 || p.y > h - 45) p.alive = false;
+          for (const ch of sourceCharges) {
+            if (Math.abs(ch.q_nC) > 0 && Math.hypot(p.x - ch.x, p.y - ch.y) < ch.r + 4) {
+              p.alive = false;
+            }
+          }
+        }
+
+        const pColor = p.type === "electron" ? "#38bdf8" : (p.type === "proton" ? "#fb7185" : (p.type === "sodium" ? "#34d399" : "#facc15"));
+        if (p.trail.length > 1) {
+          ctx.strokeStyle = pColor;
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(p.trail[0].x, p.trail[0].y);
+          for (let i = 1; i < p.trail.length; i++) ctx.lineTo(p.trail[i].x, p.trail[i].y);
+          ctx.stroke();
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+        ctx.fillStyle = pColor;
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#ffffff";
+        ctx.stroke();
+
+        const { V } = evalFieldAndV(p.x, p.y);
+        const U_aJ = p.qSign * 0.16 * V;
+        const v2 = p.vx * p.vx + p.vy * p.vy;
+        const K_aJ = 0.5 * p.massFactor * (v2 / 2200);
+        lastParticleStats = { K: K_aJ, U: U_aJ, E: K_aJ + U_aJ };
+      }
+
+      if (lastParticleStats) {
+        document.getElementById("valKin").textContent = `${lastParticleStats.K.toFixed(2)} aJ`;
+        document.getElementById("valPot").textContent = `${lastParticleStats.U.toFixed(2)} aJ`;
+        document.getElementById("valTot").textContent = `${lastParticleStats.E.toFixed(2)} aJ`;
+        const maxRef = Math.max(25, Math.abs(lastParticleStats.E) * 1.5, lastParticleStats.K * 1.2);
+        document.getElementById("barKin").style.width = `${Math.min(100, (lastParticleStats.K / maxRef) * 100)}%`;
+        document.getElementById("barPot").style.width = `${Math.min(100, Math.max(0, ((lastParticleStats.U + maxRef / 2) / maxRef) * 100))}%`;
+        document.getElementById("barTot").style.width = `${Math.min(100, Math.max(0, ((lastParticleStats.E + maxRef / 2) / maxRef) * 100))}%`;
+      }
+
+      for (let i = 0; i < sourceCharges.length; i++) {
+        const ch = sourceCharges[i];
+        const isPos = ch.q_nC > 0;
+        const isNeg = ch.q_nC < 0;
+        ctx.beginPath();
+        ctx.arc(ch.x, ch.y, ch.r, 0, Math.PI * 2);
+        ctx.fillStyle = isPos ? "#e11d48" : (isNeg ? "#0284c7" : "#64748b");
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#ffffff";
+        ctx.stroke();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 14px Inter, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(isPos ? `+q${i + 1}` : (isNeg ? `−q${i + 1}` : "0"), ch.x, ch.y);
+      }
+
+      if (pointA) {
+        ctx.fillStyle = "#fb7185";
+        ctx.beginPath(); ctx.arc(pointA.x, pointA.y, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.font = "bold 12px Inter"; ctx.fillText("A", pointA.x, pointA.y - 12);
+      }
+      if (pointB) {
+        ctx.fillStyle = "#38bdf8";
+        ctx.beginPath(); ctx.arc(pointB.x, pointB.y, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.font = "bold 12px Inter"; ctx.fillText("B", pointB.x, pointB.y - 12);
+      }
+      if (pointA && pointB) {
+        ctx.strokeStyle = "#fde047";
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(pointA.x, pointA.y); ctx.lineTo(pointB.x, pointB.y); ctx.stroke();
+        ctx.setLineDash([]);
+        const Va = evalFieldAndV(pointA.x, pointA.y).V;
+        const Vb = evalFieldAndV(pointB.x, pointB.y).V;
+        const L_nJ = -1.0 * (Vb - Va);
+        document.getElementById("hudLabWork").textContent = `L_AB(+1 nC) = ${L_nJ.toFixed(1)} nJ`;
+      }
+
+      const pInfo = evalFieldAndV(probeCursor.x, probeCursor.y);
+      ctx.beginPath();
+      ctx.arc(probeCursor.x, probeCursor.y, 6, 0, Math.PI * 2);
+      ctx.fillStyle = "#facc15";
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#0f172a";
+      ctx.stroke();
+
+      document.getElementById("hudVp").textContent = pInfo.V.toFixed(1);
+      document.getElementById("hudEp").textContent = pInfo.Emag.toFixed(1);
+    }
+
+    (function initLabAEvents() {
+      const c = document.getElementById("canvasLabA");
+      if (!c) return;
+      function getPos(e) {
+        const rect = c.getBoundingClientRect();
+        const cx = e.touches ? e.touches[0].clientX : e.clientX;
+        const cy = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: cx - rect.left, y: cy - rect.top };
+      }
+      c.addEventListener("mousedown", e => {
+        const pos = getPos(e);
+        if (labAMode === "launch") {
+          spawnParticleAt(pos.x, pos.y);
+          return;
+        }
+        for (const ch of sourceCharges) {
+          if (Math.hypot(pos.x - ch.x, pos.y - ch.y) <= ch.r + 12) {
+            draggedSource = ch;
+            return;
+          }
+        }
+        probeCursor = pos;
+      });
+      c.addEventListener("mousemove", e => {
+        const pos = getPos(e);
+        if (draggedSource) {
+          draggedSource.x = Math.max(25, Math.min(c.width - 25, pos.x));
+          draggedSource.y = Math.max(25, Math.min(c.height - 60, pos.y));
+          computeHeatmapCache();
+        } else {
+          probeCursor = pos;
+        }
+      });
+      window.addEventListener("mouseup", () => { draggedSource = null; });
+
+      c.addEventListener("touchstart", e => {
+        const pos = getPos(e);
+        if (labAMode === "launch") {
+          spawnParticleAt(pos.x, pos.y);
+          return;
+        }
+        for (const ch of sourceCharges) {
+          if (Math.hypot(pos.x - ch.x, pos.y - ch.y) <= ch.r + 15) {
+            if (e.cancelable) e.preventDefault();
+            draggedSource = ch;
+            return;
+          }
+        }
+        probeCursor = pos;
+      }, { passive: false });
+
+      c.addEventListener("touchmove", e => {
+        if (draggedSource) {
+          if (e.cancelable) e.preventDefault();
+          const pos = getPos(e);
+          draggedSource.x = Math.max(25, Math.min(c.width - 25, pos.x));
+          draggedSource.y = Math.max(25, Math.min(c.height - 60, pos.y));
+          computeHeatmapCache();
+        }
+      }, { passive: false });
+      window.addEventListener("touchend", () => { draggedSource = null; });
+    })();
+
+    /* --- SIMULATORE 2: CONDENSATORE PIANO DINAMICO E DIELETTRICO SCORREVOLE --- */
+    let labB = {
+      connected: true,
+      V0: 100,
+      A_cm2: 100,
+      d_mm: 2.0,
+      insertPct: 0,
+      er: 5.4,
+      fixedQ: 0,
+      prevU: 0,
+      extWork_uJ: 0,
+      electronFlowPhase: 0,
+      currentPulse: 0
+    };
+
+    function calcLabBPhysics() {
+      const A_m2 = labB.A_cm2 * 1e-4;
+      const d_m = labB.d_mm * 1e-3;
+      const f = labB.insertPct / 100;
+      const er_eff = 1 + f * (labB.er - 1);
+      const C = er_eff * EPS_0 * (A_m2 / d_m);
+
+      let V_eff, Q_eff;
+      if (labB.connected) {
+        V_eff = labB.V0;
+        Q_eff = C * V_eff;
+        labB.fixedQ = Q_eff;
+      } else {
+        Q_eff = labB.fixedQ;
+        V_eff = Q_eff / C;
+      }
+      const E_eff = V_eff / d_m;
+      const U_J = 0.5 * Q_eff * V_eff;
+      return { C, V_eff, Q_eff, E_eff, U_J, er_eff };
+    }
+
+    labB.prevU = calcLabBPhysics().U_J;
+
+    function toggleLabBBattery() {
+      const physBefore = calcLabBPhysics();
+      labB.connected = !labB.connected;
+      const btn = document.getElementById("btnLabBBattery");
+      const badge = document.getElementById("labBCapBadge");
+      const sV0 = document.getElementById("sliderLabBV0");
+
+      if (labB.connected) {
+        btn.textContent = "Collegato (ON)";
+        btn.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 text-white hover:bg-emerald-500 transition cursor-pointer";
+        badge.textContent = "🔌 BATTERIA COLLEGATA (ΔV = costante)";
+        badge.className = "px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800";
+        sV0.disabled = false;
+        labB.currentPulse = 1.0;
+      } else {
+        labB.fixedQ = physBefore.Q_eff;
+        btn.textContent = "Scollegato (OFF)";
+        btn.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-amber-500 text-slate-950 hover:bg-amber-400 transition cursor-pointer";
+        badge.textContent = "🔋 BATTERIA SCOLLEGATA (Q = costante)";
+        badge.className = "px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-900";
+        sV0.disabled = true;
+      }
+      onLabBParamChange();
+    }
+
+    function resetExternalWork() {
+      labB.extWork_uJ = 0;
+      document.getElementById("labBWork").textContent = "0.000 µJ";
+    }
+
+    function onLabBParamChange() {
+      labB.V0 = parseFloat(document.getElementById("sliderLabBV0").value);
+      labB.A_cm2 = parseFloat(document.getElementById("sliderLabBA").value);
+      labB.d_mm = parseFloat(document.getElementById("sliderLabBD").value);
+      labB.insertPct = parseFloat(document.getElementById("sliderLabBInsert").value);
+      labB.er = parseFloat(document.getElementById("selectDielectric").value);
+
+      document.getElementById("lblLabBV0").textContent = `${labB.V0} V`;
+      document.getElementById("lblLabBA").textContent = `${labB.A_cm2} cm²`;
+      document.getElementById("lblLabBD").textContent = `${labB.d_mm.toFixed(1)} mm`;
+      document.getElementById("lblLabBInsert").textContent = labB.insertPct === 0 ? "0% (Vuoto)" : `${labB.insertPct}% inserito`;
+
+      const phys = calcLabBPhysics();
+      const dU = phys.U_J - labB.prevU;
+      if (!labB.connected) {
+        labB.extWork_uJ += dU * 1e6;
+      } else {
+        labB.currentPulse = 1.0;
+      }
+      labB.prevU = phys.U_J;
+
+      document.getElementById("outLabBC").textContent = `${(phys.C * 1e12).toFixed(1)} pF`;
+      document.getElementById("outLabBV").textContent = `${phys.V_eff.toFixed(1)} V`;
+      document.getElementById("outLabBQ").textContent = `${(phys.Q_eff * 1e9).toFixed(2)} nC`;
+      document.getElementById("outLabBE").textContent = `${(phys.E_eff / 1000).toFixed(1)} kV/m`;
+      document.getElementById("labBWork").textContent = `${labB.extWork_uJ.toFixed(3)} µJ`;
+
+      // Aggiorna barre dinamiche U, Q, E, ΔV
+      const u_uJ = phys.U_J * 1e6;
+      const q_nC = phys.Q_eff * 1e9;
+      const e_kVm = phys.E_eff / 1000;
+      document.getElementById("barLblU").textContent = `${u_uJ.toFixed(2)} µJ`;
+      document.getElementById("barLblQ").textContent = `${q_nC.toFixed(2)} nC`;
+      document.getElementById("barLblE").textContent = `${e_kVm.toFixed(1)} kV/m`;
+      document.getElementById("barLblV").textContent = `${phys.V_eff.toFixed(0)} V`;
+
+      document.getElementById("barFillU").style.width = `${Math.min(100, (u_uJ / 5.0) * 100)}%`;
+      document.getElementById("barFillQ").style.width = `${Math.min(100, (q_nC / 40.0) * 100)}%`;
+      document.getElementById("barFillE").style.width = `${Math.min(100, (e_kVm / 250.0) * 100)}%`;
+      document.getElementById("barFillV").style.width = `${Math.min(100, (phys.V_eff / 500.0) * 100)}%`;
+    }
+
+    function updateAndDrawLabB(dt) {
+      const canvas = document.getElementById("canvasLabB");
+      if (!canvas || currentLab !== "B") return;
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+      if (w === 0) return;
+
+      ctx.clearRect(0, 0, w, h);
+      const phys = calcLabBPhysics();
+
+      const cx = w * 0.56;
+      const cy = h * 0.5;
+      const plateW = 150 + (labB.A_cm2 - 10) * 1.1;
+      const gapPx = 46 + (labB.d_mm - 1.0) * 18;
+      const plateH = 16;
+
+      const yTop = cy - gapPx / 2 - plateH;
+      const yBot = cy + gapPx / 2;
+
+      const slabW = plateW;
+      const insertedW = slabW * (labB.insertPct / 100);
+      const slabX = (cx + plateW / 2) - insertedW;
+
+      ctx.fillStyle = "rgba(45, 212, 191, 0.22)";
+      ctx.fillRect(slabX, yTop + plateH + 2, slabW, gapPx - 4);
+      ctx.strokeStyle = "#2dd4bf";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(slabX, yTop + plateH + 2, slabW, gapPx - 4);
+
+      const rowsDip = Math.max(2, Math.floor(gapPx / 26));
+      const colsDip = 7;
+      for (let r = 0; r < rowsDip; r++) {
+        for (let c = 0; c < colsDip; c++) {
+          const dx = slabX + 18 + (c * (slabW - 36)) / Math.max(1, colsDip - 1);
+          const dy = yTop + plateH + 14 + (r * (gapPx - 28)) / Math.max(1, rowsDip - 1);
+          const isInsideField = dx >= cx - plateW / 2 && dx <= cx + plateW / 2;
+          const tilt = isInsideField ? 0 : Math.sin(r * 2 + c) * 0.8;
+
+          ctx.save();
+          ctx.translate(dx, dy);
+          ctx.rotate(tilt);
+          ctx.fillStyle = "#38bdf8";
+          ctx.beginPath(); ctx.arc(0, -4, 4, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "#fb7185";
+          ctx.beginPath(); ctx.arc(0, 4, 4, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      const nLines = Math.max(3, Math.min(14, Math.round(phys.E_eff / 18000)));
+      ctx.strokeStyle = "#facc15";
+      ctx.fillStyle = "#facc15";
+      ctx.lineWidth = 1.8;
+      for (let i = 0; i < nLines; i++) {
+        const lx = cx - plateW / 2 + 18 + (i * (plateW - 36)) / Math.max(1, nLines - 1);
+        ctx.beginPath();
+        ctx.moveTo(lx, yTop + plateH + 3);
+        ctx.lineTo(lx, yBot - 3);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(lx, yBot - 3);
+        ctx.lineTo(lx - 4, yBot - 11);
+        ctx.lineTo(lx + 4, yBot - 11);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      ctx.fillStyle = "#e11d48";
+      ctx.fillRect(cx - plateW / 2, yTop, plateW, plateH);
+      ctx.fillStyle = "#0284c7";
+      ctx.fillRect(cx - plateW / 2, yBot, plateW, plateH);
+
+      const nCh = Math.max(2, Math.min(15, Math.round((phys.Q_eff * 1e9) / 2.5)));
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 13px monospace";
+      ctx.textAlign = "center";
+      for (let i = 0; i < nCh; i++) {
+        const qx = cx - plateW / 2 + 14 + (i * (plateW - 28)) / Math.max(1, nCh - 1);
+        ctx.fillText("+", qx, yTop + 12);
+        ctx.fillText("−", qx, yBot + 12);
+      }
+
+      const batX = Math.max(48, cx - plateW / 2 - 95);
+      ctx.strokeStyle = "#94a3b8";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(cx, yTop);
+      ctx.lineTo(cx, yTop - 32);
+      ctx.lineTo(batX, yTop - 32);
+      if (labB.connected) {
+        ctx.lineTo(batX, cy - 16);
+      } else {
+        ctx.lineTo(batX, cy - 45);
+        ctx.moveTo(batX, cy - 45);
+        ctx.lineTo(batX + 20, cy - 24);
+      }
+      ctx.moveTo(cx, yBot + plateH);
+      ctx.lineTo(cx, yBot + plateH + 32);
+      ctx.lineTo(batX, yBot + plateH + 32);
+      ctx.lineTo(batX, cy + 16);
+      ctx.stroke();
+
+      if (labB.connected && labB.currentPulse > 0.02) {
+        labB.electronFlowPhase = (labB.electronFlowPhase + dt * 90) % 100;
+        labB.currentPulse *= 0.96;
+        ctx.fillStyle = "#38bdf8";
+        for (let k = 0; k < 4; k++) {
+          const t = ((labB.electronFlowPhase + k * 25) % 100) / 100;
+          const ex = batX + t * (cx - batX);
+          ctx.beginPath(); ctx.arc(ex, yBot + plateH + 32, 4, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+
+      ctx.strokeStyle = "#fb7185";
+      ctx.lineWidth = 3.5;
+      ctx.beginPath(); ctx.moveTo(batX - 18, cy - 16); ctx.lineTo(batX + 18, cy - 16); ctx.stroke();
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 4.5;
+      ctx.beginPath(); ctx.moveTo(batX - 10, cy + 16); ctx.lineTo(batX + 10, cy + 16); ctx.stroke();
+
+      ctx.fillStyle = "#f8fafc";
+      ctx.font = "bold 12px Inter, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText(`V₀ = ${labB.V0} V`, batX - 24, cy + 4);
+      ctx.fillStyle = labB.connected ? "#34d399" : "#fbbf24";
+      ctx.fillText(labB.connected ? "CHIUSO" : "APERTO", batX + 18, cy - 34);
+    }
+
+    let lastFrameTime = performance.now();
+    function mainSimLoop(now) {
+      const dt = Math.min(0.05, (now - lastFrameTime) / 1000);
+      lastFrameTime = now;
+
+      if (!document.getElementById("tab-laboratori").classList.contains("hidden")) {
+        if (currentLab === "A") updateAndDrawLabA(dt);
+        if (currentLab === "B") updateAndDrawLabB(dt);
+      }
+      requestAnimationFrame(mainSimLoop);
+    }
+
+    /* -----------------------------------------------------------------------
+       4. TAB 3: LAVAGNA VIRTUALE IN ARDESIA 3D CON I DUE FELTRI INTERATTIVI
+       ----------------------------------------------------------------------- */
+    const chalkboardExercises = [
+      {
+        shortTitle: "L1 · Trasporto Na⁺",
+        lessonBadge: "Lezione 1 · Lavoro ed Energia Potenziale",
+        bookRef: "Cutnell & Johnson · Cap. 18, p. 64 n. 2 & p. 67 n. 16",
+        title: "Trasporto dello ione sodio (Na⁺) attraverso la membrana cellulare",
+        text: "All'esterno di una membrana cellulare (spessore $d = 8,0\\text{ nm}$) il potenziale è superiore di $70\\text{ mV}$ rispetto all'interno ($V_{\\text{est}} - V_{\\text{int}} = +0,070\\text{ V}$). Quando si apre un canale ionico, uno ione $\\text{Na}^+$ ($q = +1,60 \\cdot 10^{-19}\\text{ C}$) attraversa la membrana dall'esterno verso l'interno. Calcola il lavoro $L$ compiuto dalla forza elettrica e il modulo del campo $E$ nella membrana.",
+        methodNotes: [
+          "Converti sempre $\\text{mV} \\to 10^{-3}\\text{ V}$ e $\\text{nm} \\to 10^{-9}\\text{ m}$ prima di sostituire.",
+          "Attenzione al segno di $\\Delta V$: si calcola sempre come $V_{\\text{finale}} - V_{\\text{iniziale}} = V_{\\text{int}} - V_{\\text{est}} = -0,070\\text{ V}$.",
+          "Poiché $\\text{Na}^+$ è positivo e scende verso potenziale minore, il lavoro del campo DEVE risultare positivo!"
+        ],
+        svgs: [
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="20" y="22" width="220" height="26" rx="5" fill="#e11d48" opacity="0.85"/>
+            <text x="130" y="39" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">Esterno cellula (+70 mV)</text>
+            <rect x="20" y="142" width="220" height="26" rx="5" fill="#0284c7" opacity="0.85"/>
+            <text x="130" y="159" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">Interno cellula (0 mV)</text>
+            <text x="130" y="98" fill="#a5f3fc" font-size="12" text-anchor="middle">d = 8,0 nm = 8,0 × 10⁻⁹ m</text>
+          </svg>`,
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="20" y="22" width="220" height="26" rx="5" fill="#e11d48" opacity="0.85"/>
+            <text x="130" y="39" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">Esterno (+70 mV)</text>
+            <rect x="20" y="142" width="220" height="26" rx="5" fill="#0284c7" opacity="0.85"/>
+            <text x="130" y="159" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">Interno (0 mV)</text>
+            <circle cx="130" cy="68" r="14" fill="#22c55e" stroke="#fff" stroke-width="2"/>
+            <text x="130" y="72" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">Na⁺</text>
+            <path d="M 130 85 L 130 128" stroke="#bbf7d0" stroke-width="3" stroke-dasharray="4 3"/>
+            <polygon points="130,135 125,125 135,125" fill="#bbf7d0"/>
+            <text x="175" y="105" fill="#bbf7d0" font-size="11" font-weight="bold">L &gt; 0</text>
+          </svg>`,
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="20" y="22" width="220" height="26" rx="5" fill="#e11d48" opacity="0.85"/>
+            <rect x="20" y="142" width="220" height="26" rx="5" fill="#0284c7" opacity="0.85"/>
+            <line x1="65" y1="54" x2="65" y2="134" stroke="#fef08a" stroke-width="2"/>
+            <polygon points="65,138 61,129 69,129" fill="#fef08a"/>
+            <line x1="195" y1="54" x2="195" y2="134" stroke="#fef08a" stroke-width="2"/>
+            <polygon points="195,138 191,129 199,129" fill="#fef08a"/>
+            <circle cx="130" cy="95" r="14" fill="#22c55e" stroke="#fff" stroke-width="2"/>
+            <text x="130" y="99" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">Na⁺</text>
+            <text x="130" y="182" fill="#fef08a" font-size="11" font-weight="bold" text-anchor="middle">E = 8,8 × 10⁶ V/m (verso l'interno)</text>
+          </svg>`
+        ],
+        steps: [
+          {
+            title: "1. Dati in unità SI e segni espliciti",
+            color: "chalk-text-cyan",
+            body: "• Carica dello ione sodio: $q = +e = +1,60 \\cdot 10^{-19}\\text{ C}$<br>• Salto di potenziale: $\\Delta V = V_{\\text{int}} - V_{\\text{est}} = -70\\text{ mV} = -0,070\\text{ V}$<br>• Spessore membrana: $d = 8,0\\text{ nm} = 8,0 \\cdot 10^{-9}\\text{ m}$"
+          },
+          {
+            title: "2. Lavoro della forza elettrica",
+            color: "chalk-text-white",
+            body: "$$L = -\\Delta U = -q\\Delta V = -(+1,60 \\cdot 10^{-19}\\text{ C}) \\cdot (-0,070\\text{ V}) = +1,12 \\cdot 10^{-20}\\text{ J} \\approx 1,1 \\cdot 10^{-20}\\text{ J}$$"
+          },
+          {
+            title: "3. Campo elettrico uniforme nella membrana",
+            color: "chalk-text-lime",
+            body: "$$E = \\frac{|\\Delta V|}{d} = \\frac{0,070\\text{ V}}{8,0 \\cdot 10^{-9}\\text{ m}} = 8,75 \\cdot 10^6\\text{ V/m} \\approx 8,8 \\cdot 10^6\\text{ V/m}$$"
+          }
+        ]
+      },
+      {
+        shortTitle: "L2 · Flusso Cubo/Gauss",
+        lessonBadge: "Lezione 2 · Flusso del Campo e Teorema di Gauss",
+        bookRef: "Cutnell & Johnson · Cap. 17, pp. 35–36 nn. 38 e 40",
+        title: "Flusso attraverso una scatola cubica chiusa e carica interna",
+        text: "I flussi del campo elettrico attraverso le sei facce di una scatola cubica chiusa valgono: $\\Phi_1 = +1500$, $\\Phi_2 = +2200$, $\\Phi_3 = +4600$, $\\Phi_4 = -1800$, $\\Phi_5 = -3500$, $\\Phi_6 = -5400\\text{ N}\\cdot\\text{m}^2/\\text{C}$. Determina la carica totale $Q_{\\text{int}}$ racchiusa dentro la scatola.",
+        methodNotes: [
+          "Il flusso attraverso una superficie chiusa è la somma algebrica dei flussi su tutte le facce.",
+          "Flusso positivo = linee uscenti; flusso negativo = linee entranti.",
+          "Se il flusso netto totale è negativo, la carica netta interna deve essere NEGATIVA."
+        ],
+        svgs: [
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="65" y="55" width="110" height="90" fill="rgba(165,243,252,0.1)" stroke="#a5f3fc" stroke-width="2"/>
+            <polygon points="65,55 100,30 210,30 175,55" fill="rgba(165,243,252,0.16)" stroke="#a5f3fc" stroke-width="2"/>
+            <polygon points="175,55 210,30 210,120 175,145" fill="rgba(165,243,252,0.22)" stroke="#a5f3fc" stroke-width="2"/>
+            <text x="130" y="172" fill="#a5f3fc" font-size="11" text-anchor="middle">Superficie chiusa di Gauss (6 facce)</text>
+          </svg>`,
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="65" y="55" width="110" height="90" fill="rgba(165,243,252,0.1)" stroke="#a5f3fc" stroke-width="2"/>
+            <polygon points="65,55 100,30 210,30 175,55" fill="rgba(165,243,252,0.16)" stroke="#a5f3fc" stroke-width="2"/>
+            <polygon points="175,55 210,30 210,120 175,145" fill="rgba(165,243,252,0.22)" stroke="#a5f3fc" stroke-width="2"/>
+            <line x1="20" y1="95" x2="80" y2="95" stroke="#fef08a" stroke-width="2.5"/>
+            <polygon points="80,95 71,91 71,99" fill="#fef08a"/>
+            <line x1="185" y1="85" x2="230" y2="85" stroke="#bbf7d0" stroke-width="2"/>
+            <polygon points="230,85 222,81 222,89" fill="#bbf7d0"/>
+            <text x="130" y="172" fill="#fef08a" font-size="11" text-anchor="middle">Φ_tot = −2400 N·m²/C (entrante)</text>
+          </svg>`,
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="65" y="55" width="110" height="90" fill="rgba(165,243,252,0.1)" stroke="#a5f3fc" stroke-width="2"/>
+            <polygon points="65,55 100,30 210,30 175,55" fill="rgba(165,243,252,0.16)" stroke="#a5f3fc" stroke-width="2"/>
+            <polygon points="175,55 210,30 210,120 175,145" fill="rgba(165,243,252,0.22)" stroke="#a5f3fc" stroke-width="2"/>
+            <circle cx="128" cy="95" r="16" fill="#0284c7" stroke="#fff" stroke-width="2"/>
+            <text x="128" y="99" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">Q &lt; 0</text>
+            <text x="130" y="172" fill="#bbf7d0" font-size="11" font-weight="bold" text-anchor="middle">Q_int = −21 nC</text>
+          </svg>`
+        ],
+        steps: [
+          {
+            title: "1. Flusso netto totale attraverso le 6 facce",
+            color: "chalk-text-cyan",
+            body: "$$\\Phi_{\\text{tot}}(\\vec{E}) = (1500 + 2200 + 4600 - 1800 - 3500 - 5400)\\text{ N}\\cdot\\text{m}^2/\\text{C} = -2400\\text{ N}\\cdot\\text{m}^2/\\text{C}$$"
+          },
+          {
+            title: "2. Applicazione del Teorema di Gauss",
+            color: "chalk-text-white",
+            body: "$$\\Phi_{\\text{tot}}(\\vec{E}) = \\frac{Q_{\\text{int}}}{\\varepsilon_0} \\implies Q_{\\text{int}} = \\varepsilon_0 \\cdot \\Phi_{\\text{tot}}(\\vec{E})$$"
+          },
+          {
+            title: "3. Calcolo numerico della carica interna",
+            color: "chalk-text-lime",
+            body: "$$Q_{\\text{int}} = \\left(8,85 \\cdot 10^{-12}\\frac{\\text{C}^2}{\\text{N}\\cdot\\text{m}^2}\\right)\\cdot\\left(-2400\\frac{\\text{N}\\cdot\\text{m}^2}{\\text{C}}\\right) = -2,12 \\cdot 10^{-8}\\text{ C} \\approx -21\\text{ nC}$$"
+          }
+        ]
+      },
+      {
+        shortTitle: "L3 · 4 Cariche Quadrato",
+        lessonBadge: "Lezione 3 · Energia Potenziale di un Sistema",
+        bookRef: "Cutnell & Johnson · Cap. 18, p. 65 n. 10",
+        title: "Energia potenziale elettrica di 4 cariche sui vertici di un quadrato",
+        text: "Quattro cariche $q_A = +6,0 \\cdot 10^{-8}\\text{ C}$, $q_B = -4,0 \\cdot 10^{-8}\\text{ C}$, $q_C = +2,0 \\cdot 10^{-8}\\text{ C}$ e $q_D = +1,0 \\cdot 10^{-8}\\text{ C}$ sono poste ai vertici consecutivi di un quadrato di lato $l = 4,0\\text{ cm}$. Calcola l'energia potenziale elettrica $U_S$ del sistema.",
+        methodNotes: [
+          "Con $N=4$ cariche ci sono $\\frac{4 \\cdot 3}{2} = 6$ coppie: 4 lati di lunghezza $l = 0,040\\text{ m}$ e 2 diagonali di lunghezza $l\\sqrt{2} = 0,0566\\text{ m}$.",
+          "Inserisci sempre i segni espliciti di ciascuna carica nelle formule $U_{ij} = k\\frac{q_i q_j}{r_{ij}}$.",
+          "Non scomporre nulla: l'energia è uno SCALARE!"
+        ],
+        svgs: [
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="75" y="35" width="110" height="110" fill="none" stroke="#a5f3fc" stroke-width="2"/>
+            <circle cx="75" cy="35" r="9" fill="#e11d48" stroke="#fff" stroke-width="1.5"/>
+            <text x="58" y="30" fill="#fbcfe8" font-size="10" font-weight="bold">qA (+6)</text>
+            <circle cx="185" cy="35" r="9" fill="#0284c7" stroke="#fff" stroke-width="1.5"/>
+            <text x="205" y="30" fill="#a5f3fc" font-size="10" font-weight="bold">qB (−4)</text>
+            <circle cx="185" cy="145" r="9" fill="#e11d48" stroke="#fff" stroke-width="1.5"/>
+            <text x="205" y="155" fill="#fbcfe8" font-size="10" font-weight="bold">qC (+2)</text>
+            <circle cx="75" cy="145" r="9" fill="#e11d48" stroke="#fff" stroke-width="1.5"/>
+            <text x="58" y="155" fill="#fbcfe8" font-size="10" font-weight="bold">qD (+1)</text>
+            <text x="130" y="175" fill="#fef08a" font-size="10" text-anchor="middle">l = 4,0 cm = 0,040 m</text>
+          </svg>`,
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="75" y="35" width="110" height="110" fill="none" stroke="#a5f3fc" stroke-width="2"/>
+            <line x1="75" y1="35" x2="185" y2="145" stroke="#fef08a" stroke-width="2" stroke-dasharray="4 3"/>
+            <line x1="185" y1="35" x2="75" y2="145" stroke="#fef08a" stroke-width="2" stroke-dasharray="4 3"/>
+            <circle cx="75" cy="35" r="9" fill="#e11d48" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="185" cy="35" r="9" fill="#0284c7" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="185" cy="145" r="9" fill="#e11d48" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="75" cy="145" r="9" fill="#e11d48" stroke="#fff" stroke-width="1.5"/>
+            <text x="130" y="175" fill="#fef08a" font-size="10" font-weight="bold" text-anchor="middle">4 lati (l) + 2 diagonali (l√2) = 6 coppie</text>
+          </svg>`,
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="75" y="35" width="110" height="110" fill="rgba(187,247,208,0.1)" stroke="#bbf7d0" stroke-width="2"/>
+            <line x1="75" y1="35" x2="185" y2="145" stroke="#fef08a" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="185" y1="35" x2="75" y2="145" stroke="#fef08a" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <circle cx="75" cy="35" r="9" fill="#e11d48"/><circle cx="185" cy="35" r="9" fill="#0284c7"/>
+            <circle cx="185" cy="145" r="9" fill="#e11d48"/><circle cx="75" cy="145" r="9" fill="#e11d48"/>
+            <text x="130" y="175" fill="#bbf7d0" font-size="11" font-weight="bold" text-anchor="middle">U_S = −4,2 × 10⁻⁴ J</text>
+          </svg>`
+        ],
+        steps: [
+          {
+            title: "1. Le 4 coppie lungo i lati (distanza l = 0,040 m)",
+            color: "chalk-text-cyan",
+            body: "$U_{AB} = k\\frac{(+6,0\\cdot 10^{-8})(-4,0\\cdot 10^{-8})}{0,040} = -5,40 \\cdot 10^{-4}\\text{ J}$<br>$U_{BC} = k\\frac{(-4,0\\cdot 10^{-8})(+2,0\\cdot 10^{-8})}{0,040} = -1,80 \\cdot 10^{-4}\\text{ J}$<br>$U_{CD} = k\\frac{(+2,0\\cdot 10^{-8})(+1,0\\cdot 10^{-8})}{0,040} = +0,45 \\cdot 10^{-4}\\text{ J}$<br>$U_{AD} = k\\frac{(+6,0\\cdot 10^{-8})(+1,0\\cdot 10^{-8})}{0,040} = +1,35 \\cdot 10^{-4}\\text{ J}$"
+          },
+          {
+            title: "2. Le 2 coppie lungo le diagonali (distanza l√2 = 0,0566 m)",
+            color: "chalk-text-white",
+            body: "$U_{AC} = k\\frac{(+6,0\\cdot 10^{-8})(+2,0\\cdot 10^{-8})}{0,040\\sqrt{2}} = +1,91 \\cdot 10^{-4}\\text{ J}$<br>$U_{BD} = k\\frac{(-4,0\\cdot 10^{-8})(+1,0\\cdot 10^{-8})}{0,040\\sqrt{2}} = -0,64 \\cdot 10^{-4}\\text{ J}$"
+          },
+          {
+            title: "3. Somma algebrica delle 6 interazioni",
+            color: "chalk-text-lime",
+            body: "$$U_S = (-5,40 - 1,80 + 0,45 + 1,35 + 1,91 - 0,64) \\cdot 10^{-4}\\text{ J} = -4,13 \\cdot 10^{-4}\\text{ J} \\approx -4,2 \\cdot 10^{-4}\\text{ J}$$"
+          }
+        ]
+      },
+      {
+        shortTitle: "L4 · Mappa Equipotenziale",
+        lessonBadge: "Lezione 4 · Superfici Equipotenziali e Gradiente",
+        bookRef: "Cutnell & Johnson · Cap. 18, p. 69 n. 32",
+        title: "Potenziale, lavoro e campo E da una mappa equipotenziale",
+        text: "In un condensatore piano le armature sono a $12\\text{ V}$ e $0,0\\text{ V}$. Le superfici equipotenziali a $10\\text{ V}$ (punto $A$) e $8,0\\text{ V}$ (punto $B$) distano $\\Delta s = 2,0\\text{ mm}$. Calcola: (a) il campo $E$; (b) il lavoro per spostare $q = +1,5\\text{ nC}$ da $A$ a $B$; (c) la distanza $d$ tra le armature.",
+        methodNotes: [
+          "Il campo $\\vec{E}$ è sempre PERPENDICOLARE alle linee equipotenziali e punta verso potenziali DECRESCENTI.",
+          "Lo spostamento parallelo a una superficie equipotenziale non richiede lavoro ($L = 0$): conta solo il salto $\\Delta V$."
+        ],
+        svgs: [
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="20" y="25" width="10" height="140" fill="#e11d48"/><text x="25" y="18" fill="#fbcfe8" font-size="10" text-anchor="middle">12V</text>
+            <line x1="65" y1="25" x2="65" y2="165" stroke="#a5f3fc" stroke-width="2" stroke-dasharray="4 3"/><text x="65" y="18" fill="#a5f3fc" font-size="10" text-anchor="middle">10V</text>
+            <line x1="105" y1="25" x2="105" y2="165" stroke="#a5f3fc" stroke-width="2" stroke-dasharray="4 3"/><text x="105" y="18" fill="#a5f3fc" font-size="10" text-anchor="middle">8V</text>
+            <rect x="225" y="25" width="10" height="140" fill="#0284c7"/><text x="230" y="18" fill="#a5f3fc" font-size="10" text-anchor="middle">0V</text>
+            <text x="85" y="178" fill="#fef08a" font-size="10" text-anchor="middle">Δs = 2,0 mm</text>
+          </svg>`,
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="20" y="25" width="10" height="140" fill="#e11d48"/>
+            <line x1="65" y1="25" x2="65" y2="165" stroke="#a5f3fc" stroke-width="2" stroke-dasharray="4 3"/>
+            <line x1="105" y1="25" x2="105" y2="165" stroke="#a5f3fc" stroke-width="2" stroke-dasharray="4 3"/>
+            <rect x="225" y="25" width="10" height="140" fill="#0284c7"/>
+            <line x1="40" y1="60" x2="205" y2="60" stroke="#fef08a" stroke-width="2.5"/>
+            <polygon points="205,60 196,56 196,64" fill="#fef08a"/>
+            <text x="125" y="50" fill="#fef08a" font-size="11" font-weight="bold" text-anchor="middle">E = 1,0 × 10³ V/m →</text>
+          </svg>`,
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="20" y="25" width="10" height="140" fill="#e11d48"/>
+            <rect x="225" y="25" width="10" height="140" fill="#0284c7"/>
+            <circle cx="65" cy="85" r="5" fill="#bbf7d0"/><text x="53" y="83" fill="#bbf7d0" font-size="11" font-weight="bold">A</text>
+            <circle cx="105" cy="120" r="5" fill="#bbf7d0"/><text x="115" y="124" fill="#bbf7d0" font-size="11" font-weight="bold">B</text>
+            <text x="130" y="178" fill="#bbf7d0" font-size="11" font-weight="bold" text-anchor="middle">L_AB = 3,0 nJ · d = 1,2 cm</text>
+          </svg>`
+        ],
+        steps: [
+          {
+            title: "1. Modulo e verso del campo elettrico E",
+            color: "chalk-text-cyan",
+            body: "$$E = -\\frac{\\Delta V}{\\Delta s} = -\\frac{8,0\\text{ V} - 10\\text{ V}}{2,0 \\cdot 10^{-3}\\text{ m}} = 1,0 \\cdot 10^3\\text{ V/m}$$<br>Diretto perpendicolarmente alle superfici, da $12\\text{ V}$ verso $0\\text{ V}$."
+          },
+          {
+            title: "2. Lavoro per spostare q = +1,5 nC da A a B",
+            color: "chalk-text-white",
+            body: "$$L_{AB} = -q(V_B - V_A) = -(1,5 \\cdot 10^{-9}\\text{ C})(8,0\\text{ V} - 10\\text{ V}) = +3,0 \\cdot 10^{-9}\\text{ J} = 3,0\\text{ nJ}$$"
+          },
+          {
+            title: "3. Distanza totale d tra le armature",
+            color: "chalk-text-lime",
+            body: "$$d = \\frac{\\Delta V_{\\text{tot}}}{E} = \\frac{12\\text{ V}}{1,0 \\cdot 10^3\\text{ V/m}} = 1,2 \\cdot 10^{-2}\\text{ m} = 1,2\\text{ cm}$$"
+          }
+        ]
+      },
+      {
+        shortTitle: "L5 · Tastiera & Scollegato",
+        lessonBadge: "Lezione 5 · Capacità, Tastiera e Condensatore Scollegato",
+        bookRef: "Cutnell & Johnson · Cap. 18, p. 57 Es. 7 & p. 73 n. 52",
+        title: "Tastiera capacitiva e condensatore scollegato dal generatore",
+        text: "Un condensatore piano nel vuoto ha armature quadrate di lato $l = 0,50\\text{ m}$ poste a distanza $d_1 = 4,0\\text{ mm}$ (simile al principio di un tasto capacitivo) e viene caricato a $\\Delta V_1 = 300\\text{ V}$. Una volta carico <strong>viene staccato dal generatore</strong> e le armature vengono allontanate fino a $d_2 = 10\\text{ mm}$. Calcola $U_1$ e il lavoro esterno $L_{\\text{est}}$ necessario.",
+        methodNotes: [
+          "Batteria STACCATA $\\implies$ la carica $Q$ non può fluire e resta COSTANTE!",
+          "Usa $U = \\frac{Q^2}{2C}$ perché $Q$ è costante: diminuendo $C$, l'energia $U$ AUMENTA (serve lavoro positivo per separare piastre che si attraggono)."
+        ],
+        svgs: [
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="25" y="45" width="85" height="10" fill="#e11d48"/>
+            <rect x="25" y="85" width="85" height="10" fill="#0284c7"/>
+            <text x="67" y="34" fill="#fbcfe8" font-size="10" text-anchor="middle">d₁ = 4,0 mm</text>
+            <path d="M 118 70 L 142 70" stroke="#fef08a" stroke-width="2.5"/>
+            <polygon points="145,70 137,66 137,74" fill="#fef08a"/>
+            <rect x="150" y="28" width="85" height="10" fill="#e11d48"/>
+            <rect x="150" y="122" width="85" height="10" fill="#0284c7"/>
+            <text x="192" y="20" fill="#bbf7d0" font-size="10" text-anchor="middle">d₂ = 10 mm (Q cost)</text>
+            <text x="130" y="165" fill="#fef08a" font-size="11" font-weight="bold" text-anchor="middle">L_est = U₂ − U₁ = +3,8 × 10⁻⁵ J</text>
+          </svg>`
+        ],
+        steps: [
+          {
+            title: "1. Capacità iniziale C₁ ed energia U₁ (A = 0,25 m²)",
+            color: "chalk-text-cyan",
+            body: "$$C_1 = \\varepsilon_0 \\frac{A}{d_1} = (8,85 \\cdot 10^{-12})\\frac{0,25}{4,0 \\cdot 10^{-3}} = 5,53 \\cdot 10^{-10}\\text{ F}$$<br>$$U_1 = \\frac{1}{2}C_1(\\Delta V_1)^2 = \\frac{1}{2}(5,53 \\cdot 10^{-10})(300)^2 = 2,49 \\cdot 10^{-5}\\text{ J}$$"
+          },
+          {
+            title: "2. Nuova energia U₂ a carica Q costante (d₂ = 2,5 d₁ ⇒ C₂ = C₁ / 2,5)",
+            color: "chalk-text-white",
+            body: "$$U_2 = \\frac{Q^2}{2C_2} = 2,5 \\cdot \\frac{Q^2}{2C_1} = 2,5 \\cdot U_1 = 6,22 \\cdot 10^{-5}\\text{ J}$$"
+          },
+          {
+            title: "3. Lavoro meccanico esterno compiuto",
+            color: "chalk-text-lime",
+            body: "$$L_{\\text{est}} = U_2 - U_1 = (6,22 - 2,49) \\cdot 10^{-5}\\text{ J} = +3,73 \\cdot 10^{-5}\\text{ J} \\approx 3,8 \\cdot 10^{-5}\\text{ J}$$"
+          }
+        ]
+      },
+      {
+        shortTitle: "L6 · Defibrillatore & Flash",
+        lessonBadge: "Lezione 6 · Energia e Potenza Istantanea",
+        bookRef: "Cutnell & Johnson · Cap. 18, p. 73 n. 48 & p. 74 n. 58",
+        title: "Defibrillatore cardiaco e flash elettronico ad alta potenza",
+        text: "(a) Il condensatore di un <strong>flash fotografico</strong> ($C = 850\\text{ }\\mu\\text{F}$) è caricato a $\\Delta V = 280\\text{ V}$ e si scarica in $\\Delta t = 3,9\\text{ ms}$: calcola l'energia $U$ e la potenza media $P$.<br>(b) Il condensatore di un <strong>defibrillatore</strong> ($C_d = 120\\text{ }\\mu\\text{F}$) immagazzina $U_d = 73\\text{ J}$: a quale tensione $\\Delta V_d$ è caricato?",
+        methodNotes: [
+          "Il condensatore accumula energia lentamente dalla batteria e la rilascia in pochi millisecondi, sviluppando potenze dell'ordine dei kilowatt!",
+          "Attenzione: $1\\text{ }\\mu\\text{F} = 10^{-6}\\text{ F}$ e $1\\text{ ms} = 10^{-3}\\text{ s}$."
+        ],
+        svgs: [
+          `<svg viewBox="0 0 260 190" class="w-full max-w-xs">
+            <rect x="30" y="55" width="75" height="65" rx="8" fill="#1e293b" stroke="#fef08a" stroke-width="2"/>
+            <text x="67" y="83" fill="#fef08a" font-size="11" font-weight="bold" text-anchor="middle">FLASH</text>
+            <text x="67" y="100" fill="#a5f3fc" font-size="10" text-anchor="middle">850 μF · 280 V</text>
+            <path d="M 112 88 L 145 88" stroke="#bbf7d0" stroke-width="2.5"/>
+            <polygon points="148,88 139,84 139,92" fill="#bbf7d0"/>
+            <rect x="155" y="55" width="80" height="65" rx="8" fill="#1e293b" stroke="#fb7185" stroke-width="2"/>
+            <text x="195" y="83" fill="#fb7185" font-size="10" font-weight="bold" text-anchor="middle">DEFIBRILL.</text>
+            <text x="195" y="100" fill="#bbf7d0" font-size="10" text-anchor="middle">120 μF · 73 J</text>
+            <text x="130" y="155" fill="#fef08a" font-size="11" font-weight="bold" text-anchor="middle">P_flash = 8,5 kW · V_def = 1,1 kV</text>
+          </svg>`
+        ],
+        steps: [
+          {
+            title: "1. Energia e potenza del flash fotografico (p. 73 n. 48)",
+            color: "chalk-text-cyan",
+            body: "$$U = \\frac{1}{2}C(\\Delta V)^2 = \\frac{1}{2}(850 \\cdot 10^{-6}\\text{ F})(280\\text{ V})^2 = 33,3\\text{ J} \\approx 33\\text{ J}$$<br>$$P = \\frac{U}{\\Delta t} = \\frac{33,3\\text{ J}}{3,9 \\cdot 10^{-3}\\text{ s}} = 8540\\text{ W} \\approx 8,5\\text{ kW}$$"
+          },
+          {
+            title: "2. Tensione di carica del defibrillatore (p. 74 n. 58)",
+            color: "chalk-text-lime",
+            body: "$$U_d = \\frac{1}{2}C_d(\\Delta V_d)^2 \\implies \\Delta V_d = \\sqrt{\\frac{2U_d}{C_d}} = \\sqrt{\\frac{2 \\cdot 73\\text{ J}}{120 \\cdot 10^{-6}\\text{ F}}} = 1103\\text{ V} \\approx 1,1\\text{ kV}$$"
+          }
+        ]
+      }
+    ];
+
+    let activeCbIdx = 0;
+    let visibleStepIndices = [0]; // array degli indici degli step attualmente visibili sulla lavagna
+
+    function renderCbExerciseSelector() {
+      const grid = document.getElementById("boardExercisesGrid");
+      grid.innerHTML = chalkboardExercises.map((ex, idx) => `
+        <button onclick="selectCbExercise(${idx})" class="px-3 py-2 rounded-xl text-xs font-extrabold text-left transition cursor-pointer border ${idx === activeCbIdx ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : ''}" style="${idx !== activeCbIdx ? 'border-color: var(--border-color); background-color: var(--bg-subtle);' : ''}">
+          ${ex.shortTitle}
+        </button>
+      `).join("");
+    }
+
+    function selectCbExercise(idx) {
+      activeCbIdx = idx;
+      visibleStepIndices = [0];
+      clearFreehandCanvas();
+      renderCbExerciseSelector();
+      renderChalkboard();
+    }
+
+    function nextCbStep() {
+      const ex = chalkboardExercises[activeCbIdx];
+      // Trova il primo indice non ancora visibile
+      for (let i = 0; i < ex.steps.length; i++) {
+        if (!visibleStepIndices.includes(i)) {
+          visibleStepIndices.push(i);
+          visibleStepIndices.sort((a, b) => a - b);
+          renderChalkboard();
+          return;
+        }
+      }
+    }
+
+    function showAllCbSteps() {
+      const ex = chalkboardExercises[activeCbIdx];
+      visibleStepIndices = ex.steps.map((_, i) => i);
+      renderChalkboard();
+    }
+
+    function renderChalkboard() {
+      const ex = chalkboardExercises[activeCbIdx];
+      document.getElementById("cbLessonBadge").textContent = ex.lessonBadge;
+      document.getElementById("cbBookRef").textContent = ex.bookRef;
+      document.getElementById("cbTitle").textContent = ex.title;
+      document.getElementById("cbText").innerHTML = ex.text;
+
+      const maxVisible = visibleStepIndices.length > 0 ? Math.max(...visibleStepIndices) : 0;
+      const svgIdx = Math.min(maxVisible, ex.svgs.length - 1);
+      document.getElementById("cbSvgBox").innerHTML = ex.svgs[svgIdx];
+      document.getElementById("cbSvgStepNum").textContent = visibleStepIndices.length;
+
+      const noteIdx = Math.min(maxVisible, ex.methodNotes.length - 1);
+      document.getElementById("cbMethodNote").innerHTML = ex.methodNotes[noteIdx];
+
+      document.getElementById("cbProgressLabel").textContent = `${visibleStepIndices.length} di ${ex.steps.length} blocchi visibili`;
+      const btnNext = document.getElementById("btnCbNext");
+      if (visibleStepIndices.length >= ex.steps.length) {
+        btnNext.disabled = true;
+        btnNext.classList.add("opacity-50");
+        btnNext.innerHTML = `<span>Completato</span><span>✓</span>`;
+      } else {
+        btnNext.disabled = false;
+        btnNext.classList.remove("opacity-50");
+        btnNext.innerHTML = `<span>Passo Successivo</span><span>✍️</span>`;
+      }
+
+      const list = document.getElementById("cbStepsList");
+
+      if (visibleStepIndices.length === 0) {
+        list.innerHTML = `
+          <div class="p-6 rounded-xl border border-dashed border-emerald-700/70 text-center text-sm text-emerald-200/80">
+            Lavagna pulita! Premi <strong>"Passo Successivo ✍️"</strong> oppure <strong>"Mostra Tutto"</strong> per riscrivere lo svolgimento.
+          </div>
+        `;
+      } else {
+        list.innerHTML = visibleStepIndices.map(stepIdx => {
+          const st = ex.steps[stepIdx];
+          return `
+            <div data-step-idx="${stepIdx}" class="cb-step-card p-4 rounded-xl bg-black/30 border border-emerald-700/60 chalk-step-anim space-y-1 relative">
+              <div class="flex items-center justify-between gap-2">
+                <div class="font-bold text-lg handwriting-chalk ${st.color}">${st.title}</div>
+                <button onclick="deleteSingleStepCard(${stepIdx}, event)" title="Elimina solo questo blocco" class="px-2 py-0.5 rounded bg-rose-600/80 hover:bg-rose-500 text-white text-[11px] font-extrabold cursor-pointer shrink-0">✕ Elimina</button>
+              </div>
+              <div class="text-sm sm:text-base leading-relaxed text-slate-100">${st.body}</div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      setTimeout(resizeOverlayCanvas, 30);
+      typesetMath();
+    }
+
+    function deleteSingleStepCard(stepIdx, e) {
+      if (e) e.stopPropagation();
+      visibleStepIndices = visibleStepIndices.filter(i => i !== stepIdx);
+      renderChalkboard();
+    }
+
+    /* --- GESTIONE STRUMENTI LAVAGNA: GESSI DESELEZIONABILI, LASER E CANCELLINO FISICO --- */
+    let boardTool = "none"; // 'none' | 'chalk' | 'laser' | 'eraser'
+    let activeChalkColor = "#f8fafc";
+    let isDrawingBoard = false;
+    let lastDrawPt = null;
+    let laserTrail = [];
+
+    let persistentChalkCanvas = document.createElement("canvas");
+    let persistentChalkCtx = persistentChalkCanvas.getContext("2d");
+
+    function updateLedgeActiveHighlight(activeEl) {
+      document.querySelectorAll(".chalk-stick, .felt-eraser-btn").forEach(el => {
+        el.classList.remove("active-tool-ledge");
+      });
+      if (activeEl) activeEl.classList.add("active-tool-ledge");
+    }
+
+    function setBoardTool(tool) {
+      if (boardTool === tool && tool !== "none") {
+        tool = "none";
+      }
+      boardTool = tool;
+      const overlay = document.getElementById("boardOverlayCanvas");
+      const eraserBanner = document.getElementById("selectiveEraserBanner");
+      const penBanner = document.getElementById("activePenBanner");
+
+      const bNone = document.getElementById("btnBoardToolNone");
+      const bChalk = document.getElementById("btnBoardToolChalk");
+      const bLaser = document.getElementById("btnBoardToolLaser");
+      const bSelErase = document.getElementById("btnBoardToolSelectErase");
+
+      [bNone, bChalk, bLaser, bSelErase].forEach(b => {
+        b.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold border cursor-pointer";
+        b.style.backgroundColor = "var(--bg-subtle)";
+      });
+      bSelErase.classList.add("flex", "items-center", "gap-1.5");
+
+      overlay.classList.remove("interactive-overlay", "eraser-cursor");
+      if (eraserBanner) eraserBanner.classList.add("hidden");
+      if (penBanner) penBanner.classList.add("hidden");
+
+      if (tool === "none") {
+        bNone.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-blue-600 text-white shadow-sm cursor-pointer";
+        bNone.style.backgroundColor = "";
+        updateLedgeActiveHighlight(null);
+      } else if (tool === "chalk") {
+        overlay.classList.add("interactive-overlay");
+        bChalk.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 text-white shadow-sm cursor-pointer";
+        bChalk.style.backgroundColor = "";
+        if (penBanner) penBanner.classList.remove("hidden");
+      } else if (tool === "laser") {
+        overlay.classList.add("interactive-overlay");
+        bLaser.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-rose-600 text-white shadow-sm cursor-pointer";
+        bLaser.style.backgroundColor = "";
+        updateLedgeActiveHighlight(null);
+      } else if (tool === "eraser") {
+        overlay.classList.add("eraser-cursor");
+        bSelErase.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1.5 cursor-pointer";
+        bSelErase.style.backgroundColor = "";
+        if (eraserBanner) eraserBanner.classList.remove("hidden");
+        updateLedgeActiveHighlight(document.getElementById("ledgeFeltSelectBtn"));
+      }
+      resizeOverlayCanvas();
+    }
+
+    function pickChalkColor(hex, btnEl) {
+      if (boardTool === "chalk" && activeChalkColor === hex) {
+        setBoardTool("none");
+        return;
+      }
+      activeChalkColor = hex;
+      setBoardTool("chalk");
+      updateLedgeActiveHighlight(btnEl);
+    }
+
+    function activateSelectiveFelt(btnEl) {
+      if (boardTool === "eraser") {
+        setBoardTool("none");
+      } else {
+        setBoardTool("eraser");
+        updateLedgeActiveHighlight(btnEl);
+      }
+    }
+
+    // FELTRO 2: PULISCI TUTTO (cancella sia le annotazioni libere sia tutti gli step dell'esercizio con effetto spolverata)
+    function clearEntireBoardWithDust() {
+      const dust = document.getElementById("chalkDustCloud");
+      if (dust) {
+        dust.classList.remove("sweeping");
+        void dust.offsetWidth; // trigger reflow
+        dust.classList.add("sweeping");
+      }
+      clearFreehandCanvas();
+      visibleStepIndices = [];
+      setBoardTool("none");
+      renderChalkboard();
+    }
+
+    function resizeOverlayCanvas() {
+      const slate = document.getElementById("chalkboardSlateArea");
+      const overlay = document.getElementById("boardOverlayCanvas");
+      if (!slate || !overlay) return;
+      const rect = slate.getBoundingClientRect();
+      if (rect.width > 0 && (overlay.width !== rect.width || overlay.height !== rect.height)) {
+        // Salva il disegno corrente prima del resize
+        const temp = document.createElement("canvas");
+        temp.width = persistentChalkCanvas.width || rect.width;
+        temp.height = persistentChalkCanvas.height || rect.height;
+        temp.getContext("2d").drawImage(persistentChalkCanvas, 0, 0);
+
+        overlay.width = rect.width;
+        overlay.height = rect.height;
+        persistentChalkCanvas.width = rect.width;
+        persistentChalkCanvas.height = rect.height;
+        persistentChalkCtx.drawImage(temp, 0, 0);
+
+        redrawOverlayFromPersistent();
+      }
+    }
+
+    function redrawOverlayFromPersistent() {
+      const overlay = document.getElementById("boardOverlayCanvas");
+      if (!overlay) return;
+      const ctx = overlay.getContext("2d");
+      ctx.clearRect(0, 0, overlay.width, overlay.height);
+      ctx.drawImage(persistentChalkCanvas, 0, 0);
+    }
+
+    function clearFreehandCanvas() {
+      const overlay = document.getElementById("boardOverlayCanvas");
+      if (!overlay) return;
+      persistentChalkCtx.clearRect(0, 0, persistentChalkCanvas.width, persistentChalkCanvas.height);
+      const ctx = overlay.getContext("2d");
+      ctx.clearRect(0, 0, overlay.width, overlay.height);
+      laserTrail = [];
+    }
+
+    // Eventi Mouse & Touch per Disegno Gesso, Laser e Cancellino fisico solo sul gesso
+    (function setupBoardOverlayEvents() {
+      const overlay = document.getElementById("boardOverlayCanvas");
+      if (!overlay) return;
+      const ctx = overlay.getContext("2d");
+
+      function getCoords(e) {
+        const rect = overlay.getBoundingClientRect();
+        const cx = e.touches ? e.touches[0].clientX : e.clientX;
+        const cy = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: cx - rect.left, y: cy - rect.top };
+      }
+
+      function eraseChalkAt(x, y) {
+        persistentChalkCtx.save();
+        persistentChalkCtx.globalCompositeOperation = "destination-out";
+        persistentChalkCtx.fillStyle = "rgba(0,0,0,1)";
+        persistentChalkCtx.fillRect(x - 24, y - 14, 48, 28);
+        persistentChalkCtx.restore();
+        redrawOverlayFromPersistent();
+      }
+
+      function startAction(e) {
+        if (boardTool === "none") return;
+        if (e.cancelable) e.preventDefault();
+        isDrawingBoard = true;
+        const pt = getCoords(e);
+        lastDrawPt = pt;
+
+        if (boardTool === "laser") {
+          laserTrail = [{ ...pt }];
+        } else if (boardTool === "eraser") {
+          eraseChalkAt(pt.x, pt.y);
+        }
+      }
+
+      function moveAction(e) {
+        if (!isDrawingBoard || boardTool === "none") return;
+        if (e.cancelable) e.preventDefault();
+        const pt = getCoords(e);
+
+        if (boardTool === "chalk") {
+          persistentChalkCtx.save();
+          persistentChalkCtx.globalCompositeOperation = "source-over";
+          persistentChalkCtx.strokeStyle = activeChalkColor;
+          persistentChalkCtx.lineWidth = 3.2;
+          persistentChalkCtx.lineCap = "round";
+          persistentChalkCtx.shadowBlur = 2;
+          persistentChalkCtx.shadowColor = activeChalkColor;
+          persistentChalkCtx.beginPath();
+          persistentChalkCtx.moveTo(lastDrawPt.x, lastDrawPt.y);
+          persistentChalkCtx.lineTo(pt.x, pt.y);
+          persistentChalkCtx.stroke();
+          persistentChalkCtx.restore();
+
+          redrawOverlayFromPersistent();
+          lastDrawPt = pt;
+        } else if (boardTool === "laser") {
+          laserTrail.push({ ...pt });
+          redrawOverlayFromPersistent();
+          if (laserTrail.length > 1) {
+            ctx.strokeStyle = "rgba(244, 63, 94, 0.85)";
+            ctx.lineWidth = 4;
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = "#f43f5e";
+            ctx.beginPath();
+            ctx.moveTo(laserTrail[0].x, laserTrail[0].y);
+            for (let i = 1; i < laserTrail.length; i++) ctx.lineTo(laserTrail[i].x, laserTrail[i].y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, 6, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+          if (laserTrail.length > 25) laserTrail.shift();
+        } else if (boardTool === "eraser") {
+          eraseChalkAt(pt.x, pt.y);
+        }
+      }
+
+      function endAction() {
+        if (!isDrawingBoard) return;
+        isDrawingBoard = false;
+
+        if (boardTool === "laser") {
+          setTimeout(() => {
+            if (boardTool === "laser") redrawOverlayFromPersistent();
+          }, 300);
+        }
+      }
+
+      overlay.addEventListener("mousedown", startAction);
+      overlay.addEventListener("mousemove", moveAction);
+      window.addEventListener("mouseup", endAction);
+
+      overlay.addEventListener("touchstart", startAction, { passive: false });
+      overlay.addEventListener("touchmove", moveAction, { passive: false });
+      window.addEventListener("touchend", endAction);
+    })();
+
+    /* -----------------------------------------------------------------------
+       5. TAB 4: PALESTRA ESERCIZI NON GUIDATI & QUIZ AUTOVERIFICA (CON CLIL)
+       ----------------------------------------------------------------------- */
+    const unguidedProblemsList = [
+      {
+        id: "p1",
+        level: "Base · Lezione 1",
+        badgeClass: "bg-emerald-100 text-emerald-800",
+        title: "1. Fulmine tra nuvola e terreno (Cutnell p. 67, n. 17)",
+        text: "La differenza di potenziale elettrico tra una nuvola temporalesca e il terreno è $V_{\\text{nuvola}} - V_{\\text{terreno}} = -1,3 \\cdot 10^8\\text{ V}$. Calcola in <strong>picojoule</strong> ($1\\text{ pJ} = 10^{-12}\\text{ J}$) il modulo della variazione di energia potenziale $|\\Delta U|$ di un elettrone ($e = 1,60 \\cdot 10^{-19}\\text{ C}$) che scende dalla nuvola al terreno.",
+        target: 20.8,
+        unit: "pJ",
+        hint: "Applica $|\\Delta U| = |q \\cdot \\Delta V| = (1,60 \\cdot 10^{-19}\\text{ C})(1,3 \\cdot 10^8\\text{ V})$ e dividi per $10^{-12}$.",
+        solution: "$|\\Delta U| = 2,08 \\cdot 10^{-11}\\text{ J} = 20,8\\text{ pJ}$."
+      },
+      {
+        id: "p2",
+        level: "Base · Lezione 4",
+        badgeClass: "bg-emerald-100 text-emerald-800",
+        title: "2. Candela del motore a benzina (Cutnell p. 69, n. 27)",
+        text: "Gli elettrodi di una candela distano $d = 0,75\\text{ mm}$. Quando scocca la scintilla, il campo elettrico uniforme raggiunge $E = 4,7 \\cdot 10^7\\text{ V/m}$. Calcola la differenza di potenziale $|\\Delta V|$ in <strong>kilovolt</strong> ($\text{kV}$).",
+        target: 35.25,
+        unit: "kV",
+        hint: "Converti $d = 0,75 \\cdot 10^{-3}\\text{ m}$ e usa $|\\Delta V| = E \\cdot d$. Dividi per $1000$ per ottenere kV.",
+        solution: "$|\\Delta V| = (4,7 \\cdot 10^7\\text{ V/m})(7,5 \\cdot 10^{-4}\\text{ m}) = 35\\,250\\text{ V} = 35,25\\text{ kV}$."
+      },
+      {
+        id: "p3",
+        level: "Intermedio · Lezione 3",
+        badgeClass: "bg-amber-100 text-amber-800",
+        title: "3. Sistema di 3 cariche su triangolo rettangolo (Cutnell p. 64, n. 6)",
+        text: "Sui vertici di un triangolo rettangolo di cateti $3,00\\text{ m}$ e $4,00\\text{ m}$ sono poste $q_1 = +8,00\\text{ }\\mu\\text{C}$, $q_2 = +20,0\\text{ }\\mu\\text{C}$ (nell'angolo retto) e $q_3 = -15,0\\text{ }\\mu\\text{C}$. Calcola il modulo dell'energia potenziale $|U_S|$ in <strong>joule</strong> ($\text{J}$).",
+        target: 0.411,
+        unit: "J",
+        hint: "L'ipotenusa misura $5,00\\text{ m}$. Somma algebricamente $U_{12} + U_{23} + U_{13}$ includendo i segni delle cariche.",
+        solution: "$U_S = +0,479\\text{ J} - 0,674\\text{ J} - 0,216\\text{ J} = -0,411\\text{ J} \\implies |U_S| = 0,411\\text{ J}$."
+      },
+      {
+        id: "p4",
+        level: "Intermedio · Lezione 4",
+        badgeClass: "bg-amber-100 text-amber-800",
+        title: "4. Generatore di Van de Graaff (Cutnell p. 71, n. 34)",
+        text: "La cupola sferica cava di un generatore di Van de Graaff ha raggio $R = 0,30\\text{ m}$ e carica $Q = +15\\text{ }\\mu\\text{C}$. Determina il potenziale elettrico $V$ sulla sua superficie in <strong>kilovolt</strong> ($\text{kV}$).",
+        target: 450,
+        unit: "kV",
+        hint: "Sulla superficie di una sfera conduttrice carica $V = k\\frac{Q}{R}$.",
+        solution: "$V = (8,99 \\cdot 10^9)\\frac{15 \\cdot 10^{-6}}{0,30} = 4,50 \\cdot 10^5\\text{ V} = 450\\text{ kV}$."
+      },
+      {
+        id: "p5",
+        level: "Intermedio · Lezione 5",
+        badgeClass: "bg-amber-100 text-amber-800",
+        title: "5. Costante dielettrica incognita (Cutnell p. 73, n. 49)",
+        text: "Un condensatore piano ha capacità $C = 7,0\\text{ }\\mu\\text{F}$ quando è riempito di dielettrico. L'area di ciascuna armatura è $A = 1,5\\text{ m}^2$ e la distanza è $d = 1,0 \\cdot 10^{-5}\\text{ m}$. Calcola la costante dielettrica relativa $\\varepsilon_r$.",
+        target: 5.27,
+        unit: "adim.",
+        hint: "Inverti $C = \\varepsilon_r \\varepsilon_0 \\frac{A}{d} \\implies \\varepsilon_r = \\frac{C \\cdot d}{\\varepsilon_0 \\cdot A}$.",
+        solution: "$\\varepsilon_r = \\frac{(7,0 \\cdot 10^{-6}\\text{ F})(1,0 \\cdot 10^{-5}\\text{ m})}{(8,85 \\cdot 10^{-12}\\text{ F/m})(1,5\\text{ m}^2)} = 5,27 \\approx 5,3$."
+      },
+      {
+        id: "p6",
+        level: "Intermedio · Lezione 5",
+        badgeClass: "bg-amber-100 text-amber-800",
+        title: "6. Capacità della membrana di un neurone (Cutnell p. 73, n. 46)",
+        text: "La membrana di un neurone ($\\varepsilon_r = 5,0$, spessore $d = 1,0 \\cdot 10^{-8}\\text{ m}$) può essere modellizzata come un condensatore piano di superficie $A = 5,0 \\cdot 10^{-6}\\text{ m}^2$. Calcola la sua capacità in <strong>nanofarad</strong> ($\text{nF}$).",
+        target: 22.1,
+        unit: "nF",
+        hint: "Applica $C = \\varepsilon_r \\varepsilon_0 \\frac{A}{d}$ e dividi il risultato in Farad per $10^{-9}$ per ottenere nF.",
+        solution: "$C = 5,0 \\cdot (8,85 \\cdot 10^{-12}\\text{ F/m}) \\cdot \\frac{5,0 \\cdot 10^{-6}\\text{ m}^2}{1,0 \\cdot 10^{-8}\\text{ m}} = 2,21 \\cdot 10^{-8}\\text{ F} = 22,1\\text{ nF}$."
+      },
+      {
+        id: "p7",
+        level: "Sfida · Lezione 4",
+        badgeClass: "bg-rose-100 text-rose-800",
+        title: "7. Punti a potenziale nullo (Cutnell p. 69, n. 25)",
+        text: "Due cariche $+2q$ (a sinistra) e $-q$ (a destra) distano $d = 12\\text{ cm}$. Calcola in <strong>centimetri</strong> ($\text{cm}$) la distanza dalla carica negativa del punto a potenziale totale nullo situato <em>tra</em> le due cariche.",
+        target: 4.0,
+        unit: "cm",
+        hint: "Sia $x$ la distanza da $-q$ e $(d-x)$ la distanza da $+2q$. Imponi $V_{\\text{tot}} = k\\frac{2q}{d-x} + k\\frac{-q}{x} = 0$.",
+        solution: "$\\frac{2}{d-x} = \\frac{1}{x} \\implies 2x = d - x \\implies x = \\frac{d}{3} = \\frac{12\\text{ cm}}{3} = 4,0\\text{ cm}$."
+      },
+      {
+        id: "p8",
+        level: "Sfida · Lezione 6",
+        badgeClass: "bg-rose-100 text-rose-800",
+        title: "8. Moto contemporaneo di protone ed elettrone (Cutnell p. 75, n. 67)",
+        text: "Tra le armature di un condensatore piano vi è $\\Delta V = 175\\text{ V}$. Un elettrone e un protone partono dal punto medio equidistante dalle piastre: l'elettrone parte da fermo, mentre il protone ha una velocità iniziale $v_{0p}$ perpendicolare alle armature e le raggiunge nello stesso identico tempo dell'elettrone. Calcola $v_{0p}$ in <strong>$10^6\\text{ m/s}$</strong> (inserisci il coefficiente davanti a $10^6$).",
+        target: 2.77,
+        unit: "× 10⁶ m/s",
+        hint: "I due percorrono entrambi $d/2$. L'elettrone impiega $t = d\\sqrt{\\frac{m_e}{e\\Delta V}}$. Uguaglia a $\\frac{d}{2} = v_{0p}t + \\frac{1}{2}a_p t^2$.",
+        solution: "Sostituendo il tempo di volo $t$ nell'equazione oraria del protone si ottiene $v_{0p} = 2,77 \\cdot 10^6\\text{ m/s}$."
+      }
+    ];
+
+    function renderUnguidedProblems() {
+      const grid = document.getElementById("unguidedGrid");
+      grid.innerHTML = unguidedProblemsList.map(p => `
+        <article class="card-surface p-5 flex flex-col justify-between space-y-4">
+          <div class="space-y-2">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-extrabold ${p.badgeClass}">${p.level}</span>
+            <h3 class="text-lg font-extrabold">${p.title}</h3>
+            <p class="text-sm leading-relaxed">${p.text}</p>
+          </div>
+          <div class="space-y-2.5 pt-3 border-t" style="border-color: var(--border-color);">
+            <div class="flex flex-wrap items-center gap-2">
+              <input id="uInp-${p.id}" type="text" inputmode="decimal" placeholder="Risultato (${p.unit})" onkeydown="if(event.key==='Enter') verifyUnguided('${p.id}')" class="px-3 py-2 rounded-xl border text-sm font-mono w-44" style="background-color: var(--bg-subtle); border-color: var(--border-color);">
+              <button onclick="verifyUnguided('${p.id}')" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-blue-600 hover:bg-blue-500 text-white cursor-pointer">Verifica</button>
+              <button onclick="toggleBox('uHint-${p.id}')" class="px-3 py-2 rounded-xl text-xs font-bold border cursor-pointer" style="border-color: var(--border-color);">💡 Aiuto</button>
+              <button onclick="toggleBox('uSol-${p.id}')" class="px-3 py-2 rounded-xl text-xs font-bold border cursor-pointer" style="border-color: var(--border-color);">✓ Soluzione</button>
+            </div>
+            <div id="uFb-${p.id}" class="text-xs font-bold hidden"></div>
+            <div id="uHint-${p.id}" class="hidden p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-xs"><strong>Suggerimento:</strong> ${p.hint}</div>
+            <div id="uSol-${p.id}" class="hidden p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs"><strong>Svolgimento sintetico:</strong> ${p.solution}</div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function verifyUnguided(id) {
+      const prob = unguidedProblemsList.find(x => x.id === id);
+      const rawStr = (document.getElementById(`uInp-${id}`).value || "").replace(",", ".").trim();
+      const val = parseFloat(rawStr);
+      const fb = document.getElementById(`uFb-${id}`);
+      fb.classList.remove("hidden");
+      if (isNaN(val)) {
+        fb.textContent = "⚠️ Inserisci prima un valore numerico valido (es. 20,8 oppure 20.8).";
+        fb.className = "text-xs font-bold text-amber-600";
+        return;
+      }
+      const tol = Math.max(0.05, Math.abs(prob.target) * 0.035);
+      if (Math.abs(val - prob.target) <= tol) {
+        fb.textContent = `✅ Esatto! Il risultato corretto è ${prob.target} ${prob.unit}.`;
+        fb.className = "text-xs font-bold text-emerald-600";
+      } else {
+        fb.textContent = `❌ Non ancora (${val} ${prob.unit}). Controlla le conversioni SI o i segni e riprova!`;
+        fb.className = "text-xs font-bold text-rose-600";
+      }
+    }
+
+    function toggleBox(id) {
+      const el = document.getElementById(id);
+      if (el) { el.classList.toggle("hidden"); typesetMath(); }
+    }
+
+    /* --- 10 QUESITI QUIZ AUTOVERIFICA (INCLUSI 2 CLIL INGLESE CUTNELL P. 76) --- */
+    const quiz10Data = [
+      {
+        q: "1. È possibile definire il potenziale elettrico in una regione di spazio perché:",
+        options: [
+          "A. il campo elettrico è sempre uniforme in modulo.",
+          "B. il campo elettrico elettrostatico è un campo conservativo (circuitazione nulla).",
+          "C. le cariche dello stesso segno si respingono.",
+          "D. l'energia cinetica di una carica resta costante."
+        ],
+        correct: 1,
+        exp: "Solo per i campi conservativi il lavoro non dipende dal percorso e la circuitazione lungo una linea chiusa è nulla ($\\Gamma_\\gamma(\\vec{E})=0$)."
+      },
+      {
+        q: "2. Il potenziale elettrico nel punto $P$ vale $+12\\text{ V}$. Qual è l'energia potenziale di una carica $q = -3,0\\text{ }\\mu\\text{C}$ posta in $P$?",
+        options: ["A. $+36\\text{ }\\mu\\text{J}$", "B. $-36\\text{ }\\mu\\text{J}$", "C. $-4,0\\text{ }\\mu\\text{J}$", "D. $+4,0\\text{ }\\mu\\text{J}$"],
+        correct: 1,
+        exp: "$U = qV = (-3,0\\text{ }\\mu\\text{C})(+12\\text{ V}) = -36\\text{ }\\mu\\text{J}$. I segni vanno sempre mantenuti."
+      },
+      {
+        q: "3. Due cariche positive distano $R$. Se la distanza fra esse si riduce a $R/2$, come cambia l'energia potenziale del sistema?",
+        options: ["A. Quadruplica.", "B. Raddoppia.", "C. Si dimezza.", "D. Diventa un quarto."],
+        correct: 1,
+        exp: "$U = k\\frac{q_1 q_2}{r}$ è inversamente proporzionale a $r$ (non a $r^2$!): dimezzando $r$, $U$ raddoppia."
+      },
+      {
+        q: "4. [CLIL · Cutnell p. 76 n. 5] Three point charges have identical magnitudes, but two of the charges are negative and one is positive. These charges are fixed to three corners of a square. No matter how the charges are arranged, the potential at the empty fourth corner is always:",
+        options: ["A. zero.", "B. negative.", "C. positive.", "D. infinite."],
+        correct: 1,
+        exp: "Whether the positive charge is on the opposite corner (distance $a\\sqrt{2}$) or an adjacent corner (distance $a$), the sum $V = kq(-1/r_1 - 1/r_2 + 1/r_3)$ is always strictly negative!"
+      },
+      {
+        q: "5. Quattro cariche puntiformi positive $+Q$ sono poste ai vertici di un quadrato di lato $a$. Quanto vale il potenziale elettrico al centro del quadrato?",
+        options: ["A. $V = 4kQ/a$", "B. $V = 4\\sqrt{2}\\,kQ/a$", "C. $V = 0$", "D. $V = kQ/(4a)$"],
+        correct: 1,
+        exp: "La distanza di ogni vertice dal centro è $r = \\frac{a\\sqrt{2}}{2} = \\frac{a}{\\sqrt{2}}$. Sommando 4 contributi uguali: $V = 4 \\cdot \\frac{kQ}{a/\\sqrt{2}} = \\frac{4\\sqrt{2}\\,kQ}{a}$."
+      },
+      {
+        q: "6. [CLIL · Cutnell p. 76 n. 9] In a region of space where the electric field is constant everywhere, as it is inside a parallel plate capacitor, is the potential constant everywhere?",
+        options: [
+          "A. Yes, because E is constant.",
+          "B. No, the potential is greatest at the positive plate.",
+          "C. No, the potential is greatest at the negative plate.",
+          "D. Only at the midpoint between the plates."
+        ],
+        correct: 1,
+        exp: "Electric field lines always point from higher potential to lower potential: therefore $V$ decreases linearly from the positive plate to the negative plate."
+      },
+      {
+        q: "7. Quale delle seguenti coppie di unità di misura esprime l'intensità del campo elettrico?",
+        options: ["A. $\\text{J/C}$ oppure $\\text{V}$", "B. $\\text{C/V}$ oppure $\\text{F}$", "C. $\\text{V/m}$ oppure $\\text{N/C}$", "D. $\\text{V}\\cdot\\text{m}$ oppure $\\text{N}\\cdot\\text{m}^2/\\text{C}$"],
+        correct: 2,
+        exp: "$E = F/q \\implies \\text{N/C}$ ed $E = -\\Delta V/\\Delta s \\implies \\text{V/m}$ sono unità identiche."
+      },
+      {
+        q: "8. Quando un isolante con costante dielettrica relativa $\\varepsilon_r > 1$ viene inserito fra le armature di un condensatore ISOLATO (scollegato dalla batteria):",
+        options: [
+          "A. la capacità si riduce di un fattore $\\varepsilon_r$.",
+          "B. la carica su ciascuna armatura aumenta di un fattore $\\varepsilon_r$.",
+          "C. il campo elettrico e la d.d.p. fra le armature si riducono di un fattore $\\varepsilon_r$.",
+          "D. la differenza di potenziale aumenta di un fattore $\\varepsilon_r$."
+        ],
+        correct: 2,
+        exp: "Essendo isolato, $Q$ è costante. Poiché $C = \\varepsilon_r C_0$, si ha $\\Delta V = Q/C = \\Delta V_0 / \\varepsilon_r$ ed $E = E_0 / \\varepsilon_r$."
+      },
+      {
+        q: "9. Una particella alfa, inizialmente ferma, viene accelerata fino alla velocità $v$ da una d.d.p. di $1200\\text{ V}$. Quale d.d.p. occorre per accelerarla fino a una velocità doppia ($2v$)?",
+        options: ["A. $2400\\text{ V}$", "B. $4800\\text{ V}$", "C. $1700\\text{ V}$", "D. $600\\text{ V}$"],
+        correct: 1,
+        exp: "L'energia cinetica $K = \\frac{1}{2}mv^2 = q|\\Delta V|$ è proporzionale al quadrato della velocità: raddoppiando $v$, $K$ e $|\\Delta V|$ quadruplicano ($4 \\cdot 1200\\text{ V} = 4800\\text{ V}$)."
+      },
+      {
+        q: "10. All'interno di una sfera metallica conduttrice piena in equilibrio elettrostatico a potenziale $V = +300\\text{ V}$, quale affermazione è FALSA?",
+        options: [
+          "A. Il lavoro per spostare una carica tra due punti interni è nullo.",
+          "B. Il campo elettrico interno è costante e uguale a $+300\\text{ V/m}$.",
+          "C. Il potenziale è uguale a $+300\\text{ V}$ in tutti i punti interni.",
+          "D. Il campo elettrico esterno sulla superficie è perpendicolare alla sfera."
+        ],
+        correct: 1,
+        exp: "All'interno di un conduttore in equilibrio elettrostatico il campo elettrico è SEMPRE NULLO ($\\vec{E}_{\\text{int}} = 0$), mentre il potenziale è costante!"
+      }
+    ];
+
+    let quizAnswers = new Array(quiz10Data.length).fill(null);
+
+    function renderQuiz10() {
+      const container = document.getElementById("quizList");
+      container.innerHTML = quiz10Data.map((item, qIdx) => {
+        const chosen = quizAnswers[qIdx];
+        const answered = chosen !== null;
+        return `
+          <div class="p-4 rounded-xl border space-y-3" style="border-color: var(--border-color);">
+            <div class="font-bold text-sm sm:text-base">${item.q}</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              ${item.options.map((opt, oIdx) => {
+                let st = "border-color: var(--border-color); background-color: var(--bg-subtle);";
+                if (answered) {
+                  if (oIdx === item.correct) st = "border-color: #10b981; background-color: rgba(16,185,129,0.2); font-weight: 700;";
+                  else if (oIdx === chosen) st = "border-color: #f43f5e; background-color: rgba(244,63,94,0.2);";
+                }
+                return `<button onclick="pickQuizAns(${qIdx}, ${oIdx})" ${answered ? 'disabled' : ''} class="w-full text-left p-3 rounded-xl border text-sm transition cursor-pointer hover:border-blue-500" style="${st}">${opt}</button>`;
+              }).join("")}
+            </div>
+            ${answered ? `
+              <div class="p-3 rounded-lg text-xs sm:text-sm ${chosen === item.correct ? 'bg-emerald-500/15 text-emerald-800 dark:text-emerald-300' : 'bg-rose-500/15 text-rose-800 dark:text-rose-300'}">
+                <strong>${chosen === item.correct ? '✅ Risposta esatta!' : '❌ Risposta non corretta.'}</strong> ${item.exp}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join("");
+
+      const score = quizAnswers.reduce((acc, a, i) => acc + (a === quiz10Data[i].correct ? 1 : 0), 0);
+      document.getElementById("quizScoreBadge").textContent = `Punteggio: ${score} / ${quiz10Data.length}`;
+      typesetMath();
+    }
+
+    function pickQuizAns(qIdx, oIdx) {
+      if (quizAnswers[qIdx] !== null) return;
+      quizAnswers[qIdx] = oIdx;
+      renderQuiz10();
+    }
+
+    function resetQuiz() {
+      quizAnswers = new Array(quiz10Data.length).fill(null);
+      renderQuiz10();
+    }
+
+    /* -----------------------------------------------------------------------
+       6. TAB 5: CONVERTITORE UNITÀ SI E FILTRO TABELLA PRONTUARIO
+       ----------------------------------------------------------------------- */
+    function runUnitConverter() {
+      const val = parseFloat(document.getElementById("convInput").value);
+      const type = document.getElementById("convType").value;
+      const out = document.getElementById("convOutput");
+      if (isNaN(val)) { out.textContent = "—"; return; }
+
+      let res = 0, unit = "";
+      switch (type) {
+        case "uC_to_C": res = val * 1e-6; unit = "C"; break;
+        case "nC_to_C": res = val * 1e-9; unit = "C"; break;
+        case "eV_to_J": res = val * 1.60e-19; unit = "J"; break;
+        case "J_to_eV": res = val / 1.60e-19; unit = "eV"; break;
+        case "cm2_to_m2": res = val * 1e-4; unit = "m²"; break;
+        case "mm_to_m": res = val * 1e-3; unit = "m"; break;
+        case "uF_to_F": res = val * 1e-6; unit = "F"; break;
+        case "pF_to_F": res = val * 1e-12; unit = "F"; break;
+      }
+      out.textContent = `${res.toExponential(2)} ${unit}`;
+    }
+
+    function filterProntuarioTable() {
+      const q = document.getElementById("prontuarioFilter").value.toLowerCase();
+      const rows = document.querySelectorAll("#prontuarioTable tbody tr");
+      rows.forEach(tr => {
+        const txt = tr.textContent.toLowerCase();
+        tr.style.display = txt.includes(q) ? "" : "none";
+      });
+    }
+
+    /* -----------------------------------------------------------------------
+       7. AVVIO APPLICAZIONE AL CARICAMENTO DOM
+       ----------------------------------------------------------------------- */
+    window.addEventListener("DOMContentLoaded", () => {
+      renderLessonsGrid();
+      renderSourceSliders();
+      renderCbExerciseSelector();
+      renderChalkboard();
+      renderUnguidedProblems();
+      renderQuiz10();
+      runUnitConverter();
+      requestAnimationFrame(mainSimLoop);
+      typesetMath();
+    });
+  </script>
+</body>
+</html>
